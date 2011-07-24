@@ -1,0 +1,149 @@
+<html>
+	<head>
+		<title>Pixelle - A Bitmap transformation tool</title>
+		<meta name="Keywords" content="bitmap image pixel transform convolution mebigfatguy">
+		<script src="mbfg.js">
+		</script>
+		<link rel="stylesheet" type="text/css" href="mbfg.css" />
+	</head>
+	<body background>
+		<div style="position:absolute;top:0;left:0;width:256;height:65535;z-index:1;background-image:url(blend.jpg);">
+		</div>
+		<div style="position:absolute;top:20;left:20;z-index:3;">
+			<h1>Pixelle</h1>
+			<hr/>
+			<a href="http://www.sourceforge.net/projects/pixelle">Project Page</a>
+			<img src="vbar.gif" height="12"/>
+			<a href="javadoc/index.html">JavaDoc</a>
+			<img src="vbar.gif" height="12"/>
+			<a href="jnlp/pixelle.jnlp?v=1.1.0">Web Start</a>
+			<!--#include virtual="mbfg_menu.shtml" --> 
+			<hr/>
+
+			<p>Thanks for your interest in Pixelle.</p>
+			
+			<p>Version 1.0.0 has just been released! Please report bugs or suggestions on the project pages.</p>
+
+			<p>The web start link should work, give it a try.</p>
+
+			<p>There are many image editing projects out there, and many are very good. But most of
+			these follow the point and click transformation style, and in some instances it can be
+			tedious to edit a bitmap if you have specific ways you want to change it. This tools works
+			differently. It allows you to apply arbitrary expressions to the red, green, blue, transparent
+			and selection pieces of a bitmap. Each expression can take as input the value of any other
+			value.</p>
+
+			<p>At the heart of this program is the transform dialog, shown here:</p>
+			<img src="algodlg.png"/>
+			<p>It shows five input fields for specifying how to transform
+			the red, green, blue and transparent parts of the bitmap, as well as the selection
+			attribute of each pixel. The default values for these algorithms is the value that will 
+			produce an exact copy of the source image. In this way you can just change one field, or
+			all fields, and get what you expect. Each algorithm may include the following items.</p>
+			<ul>
+				<li>p[x,y].r, p[x,y].g, p[x,y].b, p[x,y].t, p[x,y].s<br/>
+				The pixel value for the red, green, blue, transparency and selection at a 
+				particular location.</li>
+				<li>x<br/>
+				The current x coordinate of the pixel location from left to right.</li>
+				<li>y<br/>
+				The current y coordinate of the pixel location from top to bottom.</li>
+				<li>width<br/>
+				The width in pixels of the image.</li>				
+				<li>height<br/>
+				The height in pixels of the image.</li>
+				<li>abs(e)<br/>
+				The absolute value of an expression.</li>
+				<li>min(e, f)<br/>
+				The minimum value of two expressions.</li>
+				<li>max(e, f)<br/>
+				The maximum value of two expressions.</li>
+				<li>pow(e, f)<br/>
+				One expression raised to the second expression's power</li>
+				<li>sqrt(e)<br/>
+				The square root of an expression</li>
+				<li>sin(e)<br/>
+				The sine of an expression</li>
+				<li>cos(e)<br/>
+				The cosine of an expression</li>
+				<li>tan(e)<br/>
+				The tangent of an expression</li>
+				<li>asin(e)<br/>
+				The arc sine of an expression</li>
+				<li>acos(e)<br/>
+				The arc cosine of an expression</li>
+				<li>atan(e)<br/>
+				The arc tangent of an expression</li>
+				<li>log(e)<br/>
+				The log of an expression</li>
+				<li>exp(e)<br/>
+				The euler number (e) raised to an expression's power.</li>
+				<li>random(e)<br/>
+				A random number between 0 and 1</li>
+				<li>pi()<br/>
+				The number pi, the ratio of the circumference of a circle to its diameter</li>
+				<li>e()<br/>
+				The number e, the base of the natural logarithms</li>
+			</ul>				
+			
+			<p><pre>As of June 14, simple expressions should work. Some examples:
+
+			p[x,y].r = <b>(x + y) == 100 ? 255 : p[x,y].r</b>
+
+			This sets all red pixels to the same value as the input, except those pixels
+			that form a diagonal line where x + y == 100, and those pixes are converted to white.
+
+			p[x,y].r = <b>p[x,y].g</b>
+
+			This sets all the red pixels to the value of all the green pixels.
+
+			p[x,y].b = <b>p[y,x].b</b>
+
+			This rotates the blue component 90 degrees.
+
+			p[x,y].g = <b>(p[x,y].g*3 + p[x+1,y].g + p[x,y+1].g)/5</b>
+
+			This performs a simple convolution operation on the green pixels.
+
+			p[x,y].t = <b>((x == y) || (x == (width - y))) ? 0 : p[x,y].t</b>
+
+			Sets the transparency to fully transparent in an x shape.
+
+			p[x,y].s = <b>(p[x,y].r == p[x,y].g) || (p[x,y].r == p[x,y].b)</b>
+
+			Sets the selection to any pixels where the red component equals either
+			the green or blue component.
+			
+			p[x,y].b = <b>(p[x,y].s || (p[x,y].r < p[x,y].g) ? 0 : 255</b>
+
+			Sets the blue pixel to full blue if the pixel is selected or if the red component
+			is less than the green component, or else it sets it to black.
+
+			</pre></p>
+
+			<p>As of November 14, a pixel inspector window has been added, which helps determine input for the transformations</p>
+
+			<p>As of November 21, transformations can be done to grayscale. Prototypical example is color separations. Also
+			The output size can be specified in the transform dialog</p>
+
+			<p><pre>As of February 18, multiple input sources can be processed. So
+			
+			p[x,y].r = <b>p(x/10)[x,y].r</b>
+			
+			Copies 10 pixel bands from a series of images into the destination
+			Note that if the value in the parenthesis is larger then the number of images,
+			the value is moded to fall into the appropriate range.</pre></p>
+			
+			<p>Still to be done is recognition of more image types, more options handling such as fractional pixels, 
+			a bunch of bugs, and a bunch of stuff I have yet to think about.</p>
+		</div>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-249537-4";
+urchinTracker();
+</script>
+
+	</body>
+</html>

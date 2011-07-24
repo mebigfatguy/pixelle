@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<jnlp 
+  spec="1.0+" 
+  codebase="http://pixelle.sourceforge.net/jnlp?v=$VERSION" 
+  href="pixelle.jnlp">
+  <information> 
+    <title>Pixelle</title>
+    <vendor>MeBigFatGuy.com</vendor> 
+    <homepage href="http://pixelle.sourceforge.net"/> 
+    <description>Bitmap transformation tool</description> 
+    <description kind="short">A tool for transforming bitmaps thru pixel algorithms</description> 
+    <offline-allowed/> 
+  </information> 
+  <security> 
+      <all-permissions/> 
+  </security> 
+  <resources> 
+    <j2se version="1.5+" initial-heap-size="500m" max-heap-size="1200m"/>
+    <jar href="pixelle-$VERSION.jar"/> 
+    <jar href="antlr-2.7.7.jar"/> 
+    <jar href="antlr-3.1b1.jar"/> 
+    <jar href="antlr-runtime-3.1b1.jar"/> 
+    <jar href="asm-3.1.jar"/> 
+    <jar href="stringtemplate-3.1.jar"/> 
+  </resources> 
+  <application-desc main-class="com.mebigfatguy.pixelle.Pixelle"/> 
+</jnlp> 
+

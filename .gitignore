@@ -1,0 +1,7 @@
+classes
+*.jar
+*.zip
+.svn
+.settings
+javadoc
+antlr

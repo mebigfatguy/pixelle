@@ -1,0 +1,216 @@
+<!--
+/*
+ * pixelle - Graphics algorithmic editor
+ * Copyright (C) 2008-2010 Dave Brosius
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+ -->
+
+<project name="pixelle" default="build">
+	
+	<property file="build.properties"/>
+	
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="classes.dir" value="${basedir}/classes"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="etc.dir" value="${basedir}/etc"/>
+	<property name="htdocs.dir" value="${basedir}/htdocs"/>
+	<property name="jnlp.dir" value="${htdocs.dir}/jnlp"/>
+	<property name="javadoc.dir" value="${htdocs.dir}/javadoc"/>
+	<property name="antlr.gen.dir" value="${src.dir}/com/mebigfatguy/pixelle/antlr"/>
+	<property name="javac.source" value="1.5"/>
+	<property name="javac.target" value="1.5"/>
+	<property name="javac.deprecation" value="on"/>
+	<property name="javac.debug" value="on"/>
+	
+	<property name="pixelle.version" value="1.1.0"/>
+	
+	<target name="clean" description="removes all generated collateral">
+		<delete dir="${classes.dir}"/>
+		<delete dir="${antlr.gen.dir}"/>
+		<delete dir="${javadoc.dir}"/>
+		<delete dir="${jnlp.dir}"/>
+		<delete>
+    		<fileset dir="${basedir}" includes="*.zip"/>
+  		</delete>
+  		<delete file="${src.dir}/com/mebigfatguy/pixelle/resources/version.properties"/>
+	</target>
+	
+	<target name="-init" description="prepares repository for a build">
+		<mkdir dir="${classes.dir}"/>
+		<mkdir dir="${antlr.gen.dir}"/>
+		<mkdir dir="${src.dir}/com/mebigfatguy"/>
+		<mkdir dir="${javadoc.dir}"/>
+		<mkdir dir="${jnlp.dir}"/>
+		<path id="pixelle.classpath">
+			<pathelement location="${lib.dir}/antlr-runtime-3.1b1.jar"/>
+			<pathelement location="${lib.dir}/asm-3.1.jar"/>
+		</path>
+		<echo message="pixelle.version = ${pixelle.version}" file="${src.dir}/com/mebigfatguy/pixelle/resources/version.properties"/>
+	</target>
+	
+	<target name="-gen" description="generate antlr files">
+		<exec executable="java" failonerror="true">
+		    <arg value="-classpath"/>
+		    <arg value="${lib.dir}/antlr-2.7.7.jar:${lib.dir}/antlr-3.1b1.jar:${lib.dir}/antlr-runtime-3.1b1.jar:${lib.dir}/stringtemplate-3.1.jar"/>
+		    <arg value="org.antlr.Tool"/>
+		    <arg value="-target"/>
+		    <arg value="${etc.dir}/Pixelle.g"/>
+		    <arg value="-o"/>
+		    <arg value="${antlr.gen.dir}"/>
+	  	</exec>
+	</target>
+	
+	<target name="resources" depends="-init" description="copies required files">
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties"/>
+				<include name="**/*.png"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.xsd"/>
+			</fileset>
+		</copy>
+		<copy todir="${jnlp.dir}">
+			<fileset dir="${etc.dir}">
+				<include name="*.jnlp"/>
+			</fileset>
+		</copy>
+		<replaceregexp byline="true">
+  			<regexp pattern="\$VERSION"/>
+  			<substitution expression="${pixelle.version}"/>
+  			<fileset dir="${jnlp.dir}">
+   				<include name="*.jnlp"/>
+  			</fileset>
+ 		</replaceregexp>
+	</target>
+
+	
+	<target name="compile" depends="-init, -gen" description="compiles java files">
+		<javac srcdir="${src.dir}"
+				destdir="${classes.dir}"
+				source="${javac.source}"
+				target="${javac.target}"
+				deprecation="${javac.deprecation}"
+				debug="${javac.debug}">
+			<classpath refid="pixelle.classpath"/>
+		</javac>
+	</target>
+	
+	<target name="jar" depends="compile,resources" description="produces the pixelle jar file">
+		<jar destfile="${basedir}/pixelle-${pixelle.version}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="**/*.class"/>
+				<include name="**/*.properties"/>
+				<include name="**/*.png"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.xsd"/>
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="license.txt"/>
+			</fileset>
+			<manifest>
+				<attribute name="pixelle-version" value="${pixelle.version}"/>
+				<attribute name="Main-Class" value="com.mebigfatguy.pixelle.Pixelle"/>
+				<attribute name="Bundle-ManifestVersion" value="2"/>
+				<attribute name="Bundle-Name" value="pixelle plugin"/>
+				<attribute name="Bundle-SymbolicName" value="com.mebigfatguy.pixelle"/>
+				<attribute name="Bundle-Version" value="${pixelle.version}"/>
+				<attribute name="Export-Package" value="com.mebigfatguy.pixelle"/>
+			</manifest>
+		</jar>	
+	</target>
+	
+	<target name="srczip" description="builds the source distribution zip file">
+		<zip destfile="${basedir}/pixelle-src-${pixelle.version}.zip" basedir="${basedir}">
+			<fileset dir="${basedir}">
+				<include name="**/*.java"/>
+				<include name="**/*.properties"/>
+				<include name="**/*.png"/>
+				<include name="**/*.g"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.xsd"/>
+				<include name="lib/*.jar"/>
+
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="javadoc" depends="-init" description="build the javadoc for the project">
+		<javadoc packagenames="com.mebigfatguy.*"
+				 sourcepath="${src.dir}"
+				 classpathref="pixelle.classpath"
+				 destdir="${javadoc.dir}"
+				 windowtitle="pixelle api">
+		    <doctitle><![CDATA[<h1>pixelle javadoc</h1>]]></doctitle>
+		    <bottom><![CDATA[<i>Copyright &#169; 2008-2010 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
+		</javadoc>
+	</target>
+	
+	<target name="jnlp" description="copy jars to jnlp directory">
+		<copy todir="${jnlp.dir}">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		<input message="Enter keystore password" addproperty="pass"/>
+		<signjar keystore="pixelle.store" 
+		         alias="pixelle"
+		         keypass="${pass}"
+		         storepass="${pass}">
+		    <fileset dir="${jnlp.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</signjar>
+	</target>
+
+	
+	<target name="build" depends="clean, -init, compile, jar" description="builds the plugin jar">
+	</target>
+	
+	<target name="binzip" depends="build" description="zips up all jars">
+		<zip destfile="${basedir}/pixelle-bin-${pixelle.version}.zip" 
+			 basedir="${jnlp.dir}"
+			 includes="pixelle-${pixelle.version}.jar antlr-2.7.7.jar antlr-3.1b1.jar antlr-runtime-3.1b1.jar asm-3.1.jar stringtemplate-3.1.jar"/>
+	</target>
+
+	<target name="release" depends="build, jnlp, srczip, binzip, javadoc" description="prepares everything for a release"/>
+
+	<target name="snapshot">
+		<antcall target="release">
+			<param name="pixelle.version" value="${pixelle.version}-SNAPSHOT"/>
+		</antcall>
+	</target>
+	
+	<target name="run">
+		<java classname="com.mebigfatguy.pixelle.Pixelle"
+           fork="true"
+           failonerror="true"
+           maxmemory="768m">
+         <classpath>
+           <pathelement location="${classes.dir}"/>
+           <pathelement location="${lib.dir}/antlr-2.7.7.jar"/>
+           <pathelement location="${lib.dir}/antlr-3.1b1.jar"/>
+           <pathelement location="${lib.dir}/antlr-runtime-3.1b1.jar"/>
+           <pathelement location="${lib.dir}/asm-3.1.jar"/>
+           <pathelement location="${lib.dir}/stringtemplate-3.1.jar"/>
+         </classpath>
+       </java>
+
+	</target>
+</project>
