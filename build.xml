@@ -38,6 +38,23 @@
 	
 	<property name="pixelle.version" value="1.1.0"/>
 	
+	<property name="antlr-old.version" value="2.7.7"/>
+	<property name="antlr.version" value="3.1.3"/>
+	<property name="antlr-runtime.version" value="3.1.3"/>
+	<property name="stringtemplate.version" value="3.2.1"/>
+	<property name="asm.version" value="3.1"/>
+	
+    <property name="antlr-old-url" value="http://repo1.maven.org/maven2/antlr/antlr/${antlr-old.version}/antlr-${antlr-old.version}.jar"/> 
+    <property name="antlr-url" value="http://repo1.maven.org/maven2/org/antlr/antlr/${antlr.version}/antlr-${antlr.version}.jar"/> 
+    <property name="antlr-runtime-url" value="http://repo1.maven.org/maven2/org/antlr/antlr-runtime/${antlr-runtime.version}/antlr-runtime-${antlr-runtime.version}.jar"/> 
+    <property name="stringtemplate-url" value="http://repo1.maven.org/maven2/org/antlr/stringtemplate/${stringtemplate.version}/stringtemplate-${stringtemplate.version}.jar"/> 
+    <property name="asm-url" value="http://repo1.maven.org/maven2/asm/asm/${asm.version}/asm-${asm.version}.jar"/> 
+
+	<path id="pixelle.classpath">
+		<pathelement location="${lib.dir}/antlr-runtime-${antlr-runtime.version}.jar"/>
+		<pathelement location="${lib.dir}/asm-${asm.version}.jar"/>
+	</path>
+	
 	<target name="clean" description="removes all generated collateral">
 		<delete dir="${classes.dir}"/>
 		<delete dir="${antlr.gen.dir}"/>
@@ -51,21 +68,60 @@
 	
 	<target name="-init" description="prepares repository for a build">
 		<mkdir dir="${classes.dir}"/>
+		<mkdir dir="${lib.dir}"/>
 		<mkdir dir="${antlr.gen.dir}"/>
 		<mkdir dir="${src.dir}/com/mebigfatguy"/>
 		<mkdir dir="${javadoc.dir}"/>
 		<mkdir dir="${jnlp.dir}"/>
-		<path id="pixelle.classpath">
-			<pathelement location="${lib.dir}/antlr-runtime-3.1b1.jar"/>
-			<pathelement location="${lib.dir}/asm-3.1.jar"/>
-		</path>
 		<echo message="pixelle.version = ${pixelle.version}" file="${src.dir}/com/mebigfatguy/pixelle/resources/version.properties"/>
 	</target>
 	
-	<target name="-gen" description="generate antlr files">
+	<target name="antlr-old-check">
+        <available file="${basedir}/lib/antlr-${antlr-old.version}.jar" property="antlr-old-exists"/>
+    </target>
+
+	<target name="antlr-check">
+        <available file="${basedir}/lib/antlr-${antlr.version}.jar" property="antlr-exists"/>
+    </target>
+
+	<target name="antlr-runtime-check">
+        <available file="${basedir}/lib/antlr-runtime-${antlr-runtime.version}.jar" property="antlr-runtime-exists"/>
+    </target>
+
+	<target name="stringtemplate-check">
+        <available file="${basedir}/lib/stringtemplate-${stringtemplate.version}.jar" property="stringtemplate-exists"/>
+    </target>
+
+	<target name="asm-check">
+        <available file="${basedir}/lib/asm-${asm.version}.jar" property="asm-exists"/>
+    </target>
+
+    <target name="install-antlr-old" depends="antlr-old-check" unless="antlr-old-exists" description="installs antlr-old.jar into lib">
+        <get src="${antlr-old-url}" dest="${basedir}/lib/antlr-${antlr-old.version}.jar" verbose="true" ignoreerrors="true"/>
+    </target>
+
+	<target name="install-antlr" depends="antlr-check" unless="antlr-exists" description="installs antlr.jar into lib">
+        <get src="${antlr-url}" dest="${basedir}/lib/antlr-${antlr.version}.jar" verbose="true" ignoreerrors="true"/>
+    </target>
+	
+    <target name="install-antlr-runtime" depends="antlr-runtime-check" unless="antlr-runtime-exists" description="installs antlr-runtime.jar into lib">
+        <get src="${antlr-runtime-url}" dest="${basedir}/lib/antlr-runtime-${antlr-runtime.version}.jar" verbose="true" ignoreerrors="true"/>
+    </target>
+
+    <target name="install-stringtemplate" depends="stringtemplate-check" unless="stringtemplate-exists" description="installs stringtemplate.jar into lib">
+        <get src="${stringtemplate-url}" dest="${basedir}/lib/stringtemplate-${stringtemplate.version}.jar" verbose="true" ignoreerrors="true"/>
+    </target>
+
+    <target name="install-asm" depends="asm-check" unless="asm-exists" description="installs asm.jar into lib">
+        <get src="${asm-url}" dest="${basedir}/lib/asm-${asm.version}.jar" verbose="true" ignoreerrors="true"/>
+    </target>
+
+	<target name="pull" depends="install-antlr-old, install-antlr, install-antlr-runtime, install-stringtemplate, install-asm" description="pull 3rdparty jars to the lib directory"/>
+
+	<target name="-gen" depends="pull" description="generate antlr files">
 		<exec executable="java" failonerror="true">
 		    <arg value="-classpath"/>
-		    <arg value="${lib.dir}/antlr-2.7.7.jar:${lib.dir}/antlr-3.1b1.jar:${lib.dir}/antlr-runtime-3.1b1.jar:${lib.dir}/stringtemplate-3.1.jar"/>
+		    <arg value="${lib.dir}/antlr-${antlr-old.version}.jar:${lib.dir}/antlr-${antlr.version}.jar:${lib.dir}/antlr-runtime-${antlr-runtime.version}.jar:${lib.dir}/stringtemplate-${stringtemplate.version}.jar"/>
 		    <arg value="org.antlr.Tool"/>
 		    <arg value="-target"/>
 		    <arg value="${etc.dir}/Pixelle.g"/>
@@ -104,7 +160,8 @@
 				source="${javac.source}"
 				target="${javac.target}"
 				deprecation="${javac.deprecation}"
-				debug="${javac.debug}">
+				debug="${javac.debug}"
+				includeantruntime="false">
 			<classpath refid="pixelle.classpath"/>
 		</javac>
 	</target>
