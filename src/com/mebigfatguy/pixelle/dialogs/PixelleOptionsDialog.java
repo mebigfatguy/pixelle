@@ -31,10 +31,11 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.border.EmptyBorder;
 
 import com.mebigfatguy.pixelle.ColorOutOfBoundsOption;
 import com.mebigfatguy.pixelle.IndexOutOfBoundsOption;
@@ -46,14 +47,14 @@ public class PixelleOptionsDialog extends JDialog {
 
 	private static final long serialVersionUID = -2593224982080676492L;
 	
-	private JCheckBox colorBox = new JCheckBox(PixelleBundle.getString(PixelleBundle.STATIC_COLOR));
-	private JCheckBox borderColorBox = new JCheckBox(PixelleBundle.getString(PixelleBundle.BORDER_COLOR));
-	private JCheckBox wrappedColorBox = new JCheckBox(PixelleBundle.getString(PixelleBundle.WRAPPED_COLOR));
+	private JRadioButton colorRadio = new JRadioButton(PixelleBundle.getString(PixelleBundle.STATIC_COLOR));
+	private JRadioButton borderColorRadio = new JRadioButton(PixelleBundle.getString(PixelleBundle.BORDER_COLOR));
+	private JRadioButton wrappedColorRadio = new JRadioButton(PixelleBundle.getString(PixelleBundle.WRAPPED_COLOR));
 	private ColorButton colorButton = new ColorButton(Color.WHITE);
 	
-	private JCheckBox clipBox = new JCheckBox(PixelleBundle.getString(PixelleBundle.CLIP_COLOR));
-	private JCheckBox rollBox = new JCheckBox(PixelleBundle.getString(PixelleBundle.ROLL_COLOR));
-	private JCheckBox waveBox = new JCheckBox(PixelleBundle.getString(PixelleBundle.WAVE_COLOR));
+	private JRadioButton clipRadio = new JRadioButton(PixelleBundle.getString(PixelleBundle.CLIP_COLOR));
+	private JRadioButton rollRadio = new JRadioButton(PixelleBundle.getString(PixelleBundle.ROLL_COLOR));
+	private JRadioButton waveRadio = new JRadioButton(PixelleBundle.getString(PixelleBundle.WAVE_COLOR));
 	
 	private JButton ok = new JButton(PixelleBundle.getString(PixelleBundle.OK));
 	private JButton cancel = new JButton(PixelleBundle.getString(PixelleBundle.CANCEL));
@@ -73,18 +74,18 @@ public class PixelleOptionsDialog extends JDialog {
 	}
 	
 	public boolean isOK() {
-		if (clipBox.isSelected())
+		if (clipRadio.isSelected())
 			coobOption = ColorOutOfBoundsOption.Clip;
-		else if (rollBox.isSelected())
+		else if (rollRadio.isSelected())
 			coobOption = ColorOutOfBoundsOption.Roll;
 		else
 			coobOption = ColorOutOfBoundsOption.Wave;
 		
-		if (colorBox.isSelected()) {
+		if (colorRadio.isSelected()) {
 			ioobOption = IndexOutOfBoundsOption.SpecifiedColor;
 			ioobOption.setColor(color);
 		}
-		else if (borderColorBox.isSelected())
+		else if (borderColorRadio.isSelected())
 			ioobOption = IndexOutOfBoundsOption.BorderColor;
 		else
 			ioobOption = IndexOutOfBoundsOption.WrapColor;
@@ -101,90 +102,93 @@ public class PixelleOptionsDialog extends JDialog {
 	
 	private void initComponents() {
 		Container cp = getContentPane();
-		cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
 		
-		cp.add(Box.createVerticalStrut(5));
+		JPanel mainPanel = new JPanel();
+		mainPanel.setBorder(new EmptyBorder(10, 10, 5, 10));
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		
+		mainPanel.add(Box.createVerticalStrut(5));
 
 		{
 			JPanel p = new JPanel();
 			p.setLayout(new GridLayout(3, 1));
 			p.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), PixelleBundle.getString(PixelleBundle.COLOR_OUT_OF_BOUNDS_PIXELS)));
 
-			GuiUtils.sizeUniformly(GuiUtils.Sizing.Height, clipBox, rollBox, waveBox);
+			GuiUtils.sizeUniformly(GuiUtils.Sizing.Height, clipRadio, rollRadio, waveRadio);
 			
-			p.add(clipBox);
-			p.add(rollBox);
-			p.add(waveBox);
+			p.add(clipRadio);
+			p.add(rollRadio);
+			p.add(waveRadio);
 			
 			ButtonGroup g = new ButtonGroup();
-			g.add(clipBox);
-			g.add(rollBox);
-			g.add(waveBox);
+			g.add(clipRadio);
+			g.add(rollRadio);
+			g.add(waveRadio);
 			
 			switch (coobOption) {
 				case Clip:
-					clipBox.setSelected(true);
+					clipRadio.setSelected(true);
 				break;
 				
 				case Roll:
-					rollBox.setSelected(true);
+					rollRadio.setSelected(true);
 				break;
 				
 				case Wave:
-					waveBox.setSelected(true);
+					waveRadio.setSelected(true);
 				break;
 			}
 			
-			cp.add(p);
+			mainPanel.add(p);
 		}
 	
-		cp.add(Box.createVerticalStrut(5));
-		cp.add(Box.createVerticalGlue());
+		mainPanel.add(Box.createVerticalStrut(5));
+		mainPanel.add(Box.createVerticalGlue());
 		
 		{
 			JPanel p = new JPanel();
 			p.setLayout(new GridLayout(3, 1));
 			p.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), PixelleBundle.getString(PixelleBundle.INDEX_OUT_OF_BOUNDS_PIXELS)));
 			
-			GuiUtils.sizeUniformly(GuiUtils.Sizing.Height, colorBox, colorButton, borderColorBox, wrappedColorBox);
+			GuiUtils.sizeUniformly(GuiUtils.Sizing.Height, colorRadio, colorButton, borderColorRadio, wrappedColorRadio);
 			
 			colorButton.setColor(color);
 			
 			JPanel colorP = new JPanel();
 			colorP.setLayout(new BoxLayout(colorP, BoxLayout.X_AXIS));
-			colorP.add(colorBox);
+			colorP.add(colorRadio);
 			colorP.add(Box.createHorizontalStrut(5));
 			colorP.add(colorButton);
 			colorP.add(Box.createHorizontalGlue());
 			
 			p.add(colorP);
-			p.add(borderColorBox);
-			p.add(wrappedColorBox);
+			p.add(borderColorRadio);
+			p.add(wrappedColorRadio);
 			
 			ButtonGroup g = new ButtonGroup();
-			g.add(colorBox);
-			g.add(borderColorBox);
-			g.add(wrappedColorBox);
+			g.add(colorRadio);
+			g.add(borderColorRadio);
+			g.add(wrappedColorRadio);
 			
 			switch (ioobOption) {
 				case SpecifiedColor:
-					colorBox.setSelected(true);
+					colorRadio.setSelected(true);
 				break;
 				
 				case BorderColor:
-					borderColorBox.setSelected(true);
+					borderColorRadio.setSelected(true);
 				break;
 				
 				case WrapColor:
-					wrappedColorBox.setSelected(true);
+					wrappedColorRadio.setSelected(true);
 				break;
 			}
 			
-			cp.add(p);
+			mainPanel.add(p);
 		}
 		
-		cp.add(Box.createVerticalStrut(5));
-		cp.add(Box.createVerticalGlue());
+		mainPanel.add(Box.createVerticalStrut(5));
+		mainPanel.add(Box.createVerticalGlue());
 		
 		{
 			JPanel p = new JPanel();
@@ -197,10 +201,12 @@ public class PixelleOptionsDialog extends JDialog {
 			p.add(Box.createHorizontalStrut(10));
 			p.add(cancel);
 			p.add(Box.createHorizontalGlue());
-			cp.add(p);
+			mainPanel.add(p);
 		}
 		
-		cp.add(Box.createVerticalStrut(5));
+		mainPanel.add(Box.createVerticalStrut(5));
+		
+		cp.add(mainPanel);
 	}
 	
 	private void initListeners() {
@@ -228,7 +234,7 @@ public class PixelleOptionsDialog extends JDialog {
 		
 		colorButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				colorBox.setSelected(true);
+				colorRadio.setSelected(true);
 				Color chosenColor = JColorChooser.showDialog(PixelleOptionsDialog.this, PixelleBundle.getString(PixelleBundle.PICK_COLOR), color);
 				if (chosenColor != null) {
 					color = chosenColor;
