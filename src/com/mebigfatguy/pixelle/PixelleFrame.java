@@ -276,6 +276,10 @@ public class PixelleFrame extends JFrame {
 		}
 	}
 	
+	public ZoomLevel getZoom() {
+	    return panel.getZoom();
+	}
+	
 	public final void setZoom(final ZoomLevel zoom) {
 		panel.setZoom(zoom);
 		panel.invalidate();
@@ -371,6 +375,10 @@ public class PixelleFrame extends JFrame {
 				Dimension dim = getDimension();
 				image.draw(g, 0, 0, dim.width, dim.height);
 			}
+		}
+		
+		public ZoomLevel getZoom() {
+		    return zoom;
 		}
 		
 		public void setZoom(ZoomLevel zoomLevel) {

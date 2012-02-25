@@ -18,6 +18,7 @@
  */
 package com.mebigfatguy.pixelle.actions;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 
@@ -59,6 +60,12 @@ public class TransformAction extends AbstractAction {
 				if (dstImage != null) {
 					if (frame.createNewWindow()) {
 						PixelleFrame f = new PixelleFrame(dstImage);
+						f.setSize(frame.getSize());
+						Point location = frame.getLocation();
+						location.x += 20;
+						location.y += 20;
+						f.setLocation(location);
+						f.setZoom(((PixelleFrame) frame).getZoom());
 						String title = MessageFormat.format(PixelleBundle.getString(PixelleBundle.TITLE), PixelleBundle.getString(PixelleBundle.UNTITLED));
 						f.setTitle(title);
 						f.setVisible(true);

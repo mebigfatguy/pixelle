@@ -42,6 +42,7 @@ public class Pixelle {
 			String title = MessageFormat.format(PixelleBundle.getString(PixelleBundle.TITLE), PixelleBundle.getString(PixelleBundle.UNTITLED));
 			pf.setTitle(title);
 			Rectangle bounds = GuiUtils.getScreenBounds();
+			bounds.grow(-200, -200);
 			pf.setBounds(bounds);
 			pf.setVisible(true);
 		} catch (PixelleTransformException pte) {

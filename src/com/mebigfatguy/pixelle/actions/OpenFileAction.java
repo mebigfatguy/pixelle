@@ -18,6 +18,7 @@
  */
 package com.mebigfatguy.pixelle.actions;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Locale;
@@ -80,7 +81,9 @@ public class OpenFileAction extends AbstractAction {
 				lastDir = f.getParentFile();
 				PixelleFrame pf = new PixelleFrame();
 				pf.openFile(f);
-				pf.setBounds(GuiUtils.getScreenBounds());
+				Rectangle bounds = GuiUtils.getScreenBounds();
+	            bounds.grow(-200, -200);
+	            pf.setBounds(bounds);
 				pf.setVisible(true);
 				FrameMgr.getInstance().add(pf);
 			} catch (PixelleTransformException pte) {
