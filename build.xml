@@ -38,13 +38,11 @@
 	
 	<property name="pixelle.version" value="1.1.0"/>
 	
-	<property name="antlr-old.version" value="2.7.7"/>
-	<property name="antlr.version" value="3.1.3"/>
-	<property name="antlr-runtime.version" value="3.1.3"/>
-	<property name="stringtemplate.version" value="3.2.1"/>
-	<property name="asm.version" value="3.1"/>
+	<property name="antlr.version" value="3.4"/>
+	<property name="antlr-runtime.version" value="3.4"/>
+	<property name="stringtemplate.version" value="4.0.2"/>
+	<property name="asm.version" value="3.3.1"/>
 	
-    <property name="antlr-old-url" value="http://repo1.maven.org/maven2/antlr/antlr/${antlr-old.version}/antlr-${antlr-old.version}.jar"/> 
     <property name="antlr-url" value="http://repo1.maven.org/maven2/org/antlr/antlr/${antlr.version}/antlr-${antlr.version}.jar"/> 
     <property name="antlr-runtime-url" value="http://repo1.maven.org/maven2/org/antlr/antlr-runtime/${antlr-runtime.version}/antlr-runtime-${antlr-runtime.version}.jar"/> 
     <property name="stringtemplate-url" value="http://repo1.maven.org/maven2/org/antlr/stringtemplate/${stringtemplate.version}/stringtemplate-${stringtemplate.version}.jar"/> 
@@ -76,10 +74,6 @@
 		<echo message="pixelle.version = ${pixelle.version}" file="${src.dir}/com/mebigfatguy/pixelle/resources/version.properties"/>
 	</target>
 	
-	<target name="antlr-old-check">
-        <available file="${basedir}/lib/antlr-${antlr-old.version}.jar" property="antlr-old-exists"/>
-    </target>
-
 	<target name="antlr-check">
         <available file="${basedir}/lib/antlr-${antlr.version}.jar" property="antlr-exists"/>
     </target>
@@ -94,10 +88,6 @@
 
 	<target name="asm-check">
         <available file="${basedir}/lib/asm-${asm.version}.jar" property="asm-exists"/>
-    </target>
-
-    <target name="install-antlr-old" depends="antlr-old-check" unless="antlr-old-exists" description="installs antlr-old.jar into lib">
-        <get src="${antlr-old-url}" dest="${basedir}/lib/antlr-${antlr-old.version}.jar" verbose="true" ignoreerrors="true"/>
     </target>
 
 	<target name="install-antlr" depends="antlr-check" unless="antlr-exists" description="installs antlr.jar into lib">
@@ -116,12 +106,12 @@
         <get src="${asm-url}" dest="${basedir}/lib/asm-${asm.version}.jar" verbose="true" ignoreerrors="true"/>
     </target>
 
-	<target name="pull" depends="install-antlr-old, install-antlr, install-antlr-runtime, install-stringtemplate, install-asm" description="pull 3rdparty jars to the lib directory"/>
+	<target name="pull" depends="install-antlr, install-antlr-runtime, install-stringtemplate, install-asm" description="pull 3rdparty jars to the lib directory"/>
 
 	<target name="-gen" depends="pull" description="generate antlr files">
 		<exec executable="java" failonerror="true">
 		    <arg value="-classpath"/>
-		    <arg value="${lib.dir}/antlr-${antlr-old.version}.jar:${lib.dir}/antlr-${antlr.version}.jar:${lib.dir}/antlr-runtime-${antlr-runtime.version}.jar:${lib.dir}/stringtemplate-${stringtemplate.version}.jar"/>
+		    <arg value="${lib.dir}/antlr-${antlr.version}.jar:${lib.dir}/antlr-runtime-${antlr-runtime.version}.jar:${lib.dir}/stringtemplate-${stringtemplate.version}.jar"/>
 		    <arg value="org.antlr.Tool"/>
 		    <arg value="-target"/>
 		    <arg value="${etc.dir}/Pixelle.g"/>
