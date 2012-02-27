@@ -296,7 +296,14 @@ unaryExpression :
 	|	factor ;
 
 factor	
-	:	NUMBER 
+    @init
+    {
+        Label rightLabel = null;        
+        Label topLabel = null;
+        Label bottomLabel = null;
+        Label exitLabel = null;
+    }	
+    :	NUMBER 
 		{
 			mv.visitLdcInsn(Double.valueOf($NUMBER.text));
 		}
@@ -418,7 +425,70 @@ factor
 	|	'random' '(' ')'
 		{
 			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "random", "()D");
-		} ;
+		}
+	|   'pixelInRect' '(' expr ',' expr ',' expr ',' expr ')'
+	    {
+	    }
+    |   'pixelInCircle' '(' expr ',' expr ')'
+        {
+        }
+    |   'pixelonEdge' '(' expr ')'
+        {
+            exitLabel = new Label();
+            rightLabel = new Label();
+            topLabel = new Label();
+            bottomLabel = new Label();
+            
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitVarInsn(Opcodes.ALOAD, 2);
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DCMPG);
+            mv.visitJumpInsn(Opcodes.IFGE, rightLabel);
+            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.DCONST_1);
+            mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
+            
+            mv.visitLabel(rightLabel);
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "width", "I");
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.SWAP);
+            mv.visitInsn(Opcodes.DSUB);
+            mv.visitVarInsn(Opcodes.ALOAD, 2);
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DCMPG);
+            mv.visitJumpInsn(Opcodes.IFLE, topLabel);
+            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.DCONST_1);
+            mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
+            
+            mv.visitLabel(topLabel);
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitVarInsn(Opcodes.ALOAD, 3);
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DCMPG);
+            mv.visitJumpInsn(Opcodes.IFGE, bottomLabel);
+            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.DCONST_1);
+            mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
+              
+            mv.visitLabel(bottomLabel);
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "height", "I");
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.SWAP);
+            mv.visitInsn(Opcodes.DSUB);
+            mv.visitVarInsn(Opcodes.ALOAD, 3);
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DCMPG);
+            mv.visitJumpInsn(Opcodes.IFLE, topLabel);
+            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.DCONST_1);
+            
+            mv.visitLabel(exitLabel);
+        } ;
 	
 NUMBER :   '0'..'9'+ ( '.' ('0'..'9'+))?;
 

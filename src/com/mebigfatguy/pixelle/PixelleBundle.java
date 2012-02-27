@@ -142,6 +142,10 @@ public class PixelleBundle {
 	public static final String E = "label.e";
 	public static final String PI = "label.pi";
 	public static final String RANDOM = "label.random";
+	public static final String SPECIAL = "label.special";
+	public static final String PIXEL_IN_RECT = "label.pixelInRect";
+	public static final String PIXEL_IN_CIRCLE = "label.pixelInCircle";
+	public static final String PIXEL_ON_EDGE = "label.pixelOnEdge";
 
 
 	private static ResourceBundle rb = ResourceBundle.getBundle("com/mebigfatguy/pixelle/resources/pixelle");
