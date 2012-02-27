@@ -275,8 +275,8 @@ mul_expr	:
 		}
 	)* ;
 
-unaryExpression : 
-		'!' unaryExpression
+unaryExpression 
+    :   '!' unaryExpression
 		{
 			Label falseLabel = new Label();
 			Label continueLabel = new Label();
@@ -296,14 +296,6 @@ unaryExpression :
 	|	factor ;
 
 factor	
-    @init
-    {
-        Label rightLabel = null;        
-        Label topLabel = null;
-        Label bottomLabel = null;
-        Label failureLabel = null;
-        Label exitLabel = null;
-    }	
     :	NUMBER 
 		{
 			mv.visitLdcInsn(Double.valueOf($NUMBER.text));
@@ -311,85 +303,145 @@ factor
 	|	'(' expr ')'
 	|   pixelExpr
 	|   locationExpr
-	|	'width' 
-		{
-			mv.visitVarInsn(Opcodes.ALOAD, 0);
-			mv.visitFieldInsn(Opcodes.GETFIELD, clz, "width", "I");
-			mv.visitInsn(Opcodes.I2D);
-		}
-	|	'height' 
-		{
-			mv.visitVarInsn(Opcodes.ALOAD, 0);
-			mv.visitFieldInsn(Opcodes.GETFIELD, clz, "height", "I");
-			mv.visitInsn(Opcodes.I2D);
-		}
-	|	'abs' '(' expr ')' 
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(D)D");
-		}
-	|	'max' '(' expr ',' expr ')' 
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "max", "(DD)D");
-		}
-	|	'min' '(' expr ',' expr ')' 
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "min", "(DD)D");
-		} 
-	|	'pow' '(' expr ',' expr ')' 
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "pow", "(DD)D");
-		} 
-	|	'sqrt' '(' expr ')'
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "sqrt", "(D)D");
-		} 
-	|	'sin' '(' expr ')'
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "sin", "(D)D");
-		} 
-	|	'cos' '(' expr ')'
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "cos", "(D)D");
-		} 
-	|	'tan' '(' expr ')'
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "tan", "(D)D");
-		} 
-	|	'asin' '(' expr ')'
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "asin", "(D)D");
-		} 
-	|	'acos' '(' expr ')'
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "acos", "(D)D");
-		} 
-	|	'atan' '(' expr ')'
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "atan", "(D)D");
-		} 
-	|	'log' '(' expr ')'
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "log", "(D)D");
-		} 
-	|	'exp' '(' expr ')'
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "exp", "(D)D");
-		} 
-	|	'e' '(' ')'
-		{
-			mv.visitLdcInsn(Double.valueOf(Math.E));
-		}
-	|	'pi' '(' ')'
-		{
-			mv.visitLdcInsn(Double.valueOf(Math.PI));
-		}
-	|	'random' '(' ')'
-		{
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "random", "()D");
-		}
-	|   'pixelInRect' '(' expr ',' expr ',' expr ',' expr ')'
-	    {
-	    }
+	|   functionExpr
+	|   specialExpr ;
+		       
+pixelExpr 
+    :   'p' 
+        {
+            mv.visitVarInsn(Opcodes.ALOAD, 1);
+        }
+        ( '(' selector=expr ')' )?
+        {
+            if ($selector.text == null)
+                mv.visitInsn(Opcodes.ICONST_0);
+            else 
+            {
+                mv.visitInsn(Opcodes.D2I);
+                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
+            }
+
+            mv.visitVarInsn(Opcodes.ILOAD, 4);
+            mv.visitInsn(Opcodes.IREM);
+            mv.visitInsn(Opcodes.AALOAD);
+        } 
+        '[' expr 
+        { 
+            mv.visitInsn(Opcodes.D2I); 
+        } 
+        ',' expr 
+        { 
+            mv.visitInsn(Opcodes.D2I); 
+        } 
+        ']' '.' spec=('r'|'g'|'b'|'t'|'s') 
+        {
+            String s = $spec.text; 
+            mv.visitLdcInsn(Character.valueOf(s.charAt(0))); 
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getValue", "(IIC)D" );
+        };
+        
+locationExpr
+    :   'x' 
+        {
+            mv.visitVarInsn(Opcodes.ILOAD, 2); 
+            mv.visitInsn(Opcodes.I2D);
+        }
+    |   'y' 
+        {
+            mv.visitVarInsn(Opcodes.ILOAD, 3); 
+            mv.visitInsn(Opcodes.I2D);
+        }
+    |   'width' 
+        {
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "width", "I");
+            mv.visitInsn(Opcodes.I2D);
+        }
+    |   'height' 
+        {
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "height", "I");
+            mv.visitInsn(Opcodes.I2D);
+        }; 
+        
+functionExpr
+    :    |   'abs' '(' expr ')' 
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(D)D");
+        }
+    |   'max' '(' expr ',' expr ')' 
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "max", "(DD)D");
+        }
+    |   'min' '(' expr ',' expr ')' 
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "min", "(DD)D");
+        } 
+    |   'pow' '(' expr ',' expr ')' 
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "pow", "(DD)D");
+        } 
+    |   'sqrt' '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "sqrt", "(D)D");
+        } 
+    |   'sin' '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "sin", "(D)D");
+        } 
+    |   'cos' '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "cos", "(D)D");
+        } 
+    |   'tan' '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "tan", "(D)D");
+        } 
+    |   'asin' '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "asin", "(D)D");
+        } 
+    |   'acos' '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "acos", "(D)D");
+        } 
+    |   'atan' '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "atan", "(D)D");
+        } 
+    |   'log' '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "log", "(D)D");
+        } 
+    |   'exp' '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "exp", "(D)D");
+        } 
+    |   'e' '(' ')'
+        {
+            mv.visitLdcInsn(Double.valueOf(Math.E));
+        }
+    |   'pi' '(' ')'
+        {
+            mv.visitLdcInsn(Double.valueOf(Math.PI));
+        }
+    |   'random' '(' ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "random", "()D");
+        } ;
+        
+specialExpr
+    @init
+    {
+        Label rightLabel = null;        
+        Label topLabel = null;
+        Label bottomLabel = null;
+        Label failureLabel = null;
+        Label exitLabel = null;
+    }
+    :   'pixelInRect' '(' expr ',' expr ',' expr ',' expr ')'
+        {
+        }
     |   'pixelInCircle' '(' expr ',' expr ')'
         {
         }
@@ -456,52 +508,7 @@ factor
                        
             mv.visitLabel(exitLabel);
         } ;
-        
-pixelExpr 
-    :   'p' 
-        {
-            mv.visitVarInsn(Opcodes.ALOAD, 1);
-        }
-        ( '(' selector=expr ')' )?
-        {
-            if ($selector.text == null)
-                mv.visitInsn(Opcodes.ICONST_0);
-            else 
-            {
-                mv.visitInsn(Opcodes.D2I);
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
-            }
 
-            mv.visitVarInsn(Opcodes.ILOAD, 4);
-            mv.visitInsn(Opcodes.IREM);
-            mv.visitInsn(Opcodes.AALOAD);
-        } 
-        '[' expr 
-        { 
-            mv.visitInsn(Opcodes.D2I); 
-        } 
-        ',' expr 
-        { 
-            mv.visitInsn(Opcodes.D2I); 
-        } 
-        ']' '.' spec=('r'|'g'|'b'|'t'|'s') 
-        {
-            String s = $spec.text; 
-            mv.visitLdcInsn(Character.valueOf(s.charAt(0))); 
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getValue", "(IIC)D" );
-        };
-        
-locationExpr
-    :   'x' 
-        {
-            mv.visitVarInsn(Opcodes.ILOAD, 2); 
-            mv.visitInsn(Opcodes.I2D);
-        }
-    |   'y' 
-        {
-            mv.visitVarInsn(Opcodes.ILOAD, 3); 
-            mv.visitInsn(Opcodes.I2D);
-        };
 	
 NUMBER :   '0'..'9'+ ( '.' ('0'..'9'+))?;
 
