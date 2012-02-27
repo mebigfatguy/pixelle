@@ -301,6 +301,7 @@ factor
         Label rightLabel = null;        
         Label topLabel = null;
         Label bottomLabel = null;
+        Label failureLabel = null;
         Label exitLabel = null;
     }	
     :	NUMBER 
@@ -438,6 +439,7 @@ factor
             rightLabel = new Label();
             topLabel = new Label();
             bottomLabel = new Label();
+            failureLabel = new Label();
             
             mv.visitInsn(Opcodes.DUP);
             mv.visitVarInsn(Opcodes.ALOAD, 2);
@@ -483,10 +485,15 @@ factor
             mv.visitVarInsn(Opcodes.ALOAD, 3);
             mv.visitInsn(Opcodes.I2D);
             mv.visitInsn(Opcodes.DCMPG);
-            mv.visitJumpInsn(Opcodes.IFLE, topLabel);
+            mv.visitJumpInsn(Opcodes.IFLE, failureLabel);
             mv.visitInsn(Opcodes.POP);
             mv.visitInsn(Opcodes.DCONST_1);
+            mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
             
+            mv.visitLabel(failureLabel);
+            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.DCONST_0);  
+                       
             mv.visitLabel(exitLabel);
         } ;
 	
