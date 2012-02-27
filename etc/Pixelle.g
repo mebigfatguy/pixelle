@@ -457,7 +457,7 @@ specialExpr
             mv.visitVarInsn(Opcodes.ILOAD, 2);
             mv.visitInsn(Opcodes.I2D);
             mv.visitInsn(Opcodes.DCMPG);
-            mv.visitJumpInsn(Opcodes.IFGE, rightLabel);
+            mv.visitJumpInsn(Opcodes.IFLE, rightLabel);
             mv.visitInsn(Opcodes.POP2);
             mv.visitInsn(Opcodes.DCONST_1);
             mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
@@ -472,7 +472,7 @@ specialExpr
             mv.visitVarInsn(Opcodes.ILOAD, 2);
             mv.visitInsn(Opcodes.I2D);
             mv.visitInsn(Opcodes.DCMPG);
-            mv.visitJumpInsn(Opcodes.IFLE, topLabel);
+            mv.visitJumpInsn(Opcodes.IFGE, topLabel);
             mv.visitInsn(Opcodes.POP2);
             mv.visitInsn(Opcodes.DCONST_1);
             mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
@@ -482,7 +482,7 @@ specialExpr
             mv.visitVarInsn(Opcodes.ILOAD, 3);
             mv.visitInsn(Opcodes.I2D);
             mv.visitInsn(Opcodes.DCMPG);
-            mv.visitJumpInsn(Opcodes.IFGE, bottomLabel);
+            mv.visitJumpInsn(Opcodes.IFLE, bottomLabel);
             mv.visitInsn(Opcodes.POP2);
             mv.visitInsn(Opcodes.DCONST_1);
             mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
@@ -497,7 +497,7 @@ specialExpr
             mv.visitVarInsn(Opcodes.ILOAD, 3);
             mv.visitInsn(Opcodes.I2D);
             mv.visitInsn(Opcodes.DCMPG);
-            mv.visitJumpInsn(Opcodes.IFLE, failureLabel);
+            mv.visitJumpInsn(Opcodes.IFGE, failureLabel);
             mv.visitInsn(Opcodes.POP2);
             mv.visitInsn(Opcodes.DCONST_1);
             mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
