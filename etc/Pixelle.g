@@ -309,48 +309,8 @@ factor
 			mv.visitLdcInsn(Double.valueOf($NUMBER.text));
 		}
 	|	'(' expr ')'
-	|   'p' 
-		{
-			mv.visitVarInsn(Opcodes.ALOAD, 1);
-		}
-		( '(' selector=expr ')' )?
-		{
-			if ($selector.text == null)
-				mv.visitInsn(Opcodes.ICONST_0);
-			else 
-			{
-				mv.visitInsn(Opcodes.D2I);
-				mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
-			}
-
-			mv.visitVarInsn(Opcodes.ILOAD, 4);
-			mv.visitInsn(Opcodes.IREM);
-			mv.visitInsn(Opcodes.AALOAD);
-		} 
-		'[' expr 
-		{ 
-			mv.visitInsn(Opcodes.D2I); 
-		} 
-		',' expr 
-		{ 
-			mv.visitInsn(Opcodes.D2I); 
-		} 
-		']' '.' spec=('r'|'g'|'b'|'t'|'s') 
-		{
-			String s = $spec.text; 
-			mv.visitLdcInsn(Character.valueOf(s.charAt(0))); 
-			mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getValue", "(IIC)D" );
-		} 
-	| 	'x' 
-		{
-			mv.visitVarInsn(Opcodes.ILOAD, 2); 
-			mv.visitInsn(Opcodes.I2D);
-		}
-	| 	'y' 
-		{
-			mv.visitVarInsn(Opcodes.ILOAD, 3); 
-			mv.visitInsn(Opcodes.I2D);
-		}
+	|   pixelExpr
+	|   locationExpr
 	|	'width' 
 		{
 			mv.visitVarInsn(Opcodes.ALOAD, 0);
@@ -496,6 +456,52 @@ factor
                        
             mv.visitLabel(exitLabel);
         } ;
+        
+pixelExpr 
+    :   'p' 
+        {
+            mv.visitVarInsn(Opcodes.ALOAD, 1);
+        }
+        ( '(' selector=expr ')' )?
+        {
+            if ($selector.text == null)
+                mv.visitInsn(Opcodes.ICONST_0);
+            else 
+            {
+                mv.visitInsn(Opcodes.D2I);
+                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
+            }
+
+            mv.visitVarInsn(Opcodes.ILOAD, 4);
+            mv.visitInsn(Opcodes.IREM);
+            mv.visitInsn(Opcodes.AALOAD);
+        } 
+        '[' expr 
+        { 
+            mv.visitInsn(Opcodes.D2I); 
+        } 
+        ',' expr 
+        { 
+            mv.visitInsn(Opcodes.D2I); 
+        } 
+        ']' '.' spec=('r'|'g'|'b'|'t'|'s') 
+        {
+            String s = $spec.text; 
+            mv.visitLdcInsn(Character.valueOf(s.charAt(0))); 
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getValue", "(IIC)D" );
+        };
+        
+locationExpr
+    :   'x' 
+        {
+            mv.visitVarInsn(Opcodes.ILOAD, 2); 
+            mv.visitInsn(Opcodes.I2D);
+        }
+    |   'y' 
+        {
+            mv.visitVarInsn(Opcodes.ILOAD, 3); 
+            mv.visitInsn(Opcodes.I2D);
+        };
 	
 NUMBER :   '0'..'9'+ ( '.' ('0'..'9'+))?;
 
