@@ -301,13 +301,13 @@ factor
 			mv.visitLdcInsn(Double.valueOf($NUMBER.text));
 		}
 	|	'(' expr ')'
-	|   pixelExpr
-	|   locationExpr
 	|   functionExpr
-	|   specialExpr ;
+	|   specialExpr
+    |   pixelExpr
+    |   locationExpr;
 		       
 pixelExpr 
-    :   'p' 
+    :   P 
         {
             mv.visitVarInsn(Opcodes.ALOAD, 1);
         }
@@ -341,23 +341,23 @@ pixelExpr
         };
         
 locationExpr
-    :   'x' 
+    :   X
         {
             mv.visitVarInsn(Opcodes.ILOAD, 2); 
             mv.visitInsn(Opcodes.I2D);
         }
-    |   'y' 
+    |   Y 
         {
             mv.visitVarInsn(Opcodes.ILOAD, 3); 
             mv.visitInsn(Opcodes.I2D);
         }
-    |   'width' 
+    |   WIDTH
         {
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "width", "I");
             mv.visitInsn(Opcodes.I2D);
         }
-    |   'height' 
+    |   HEIGHT 
         {
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "height", "I");
@@ -365,67 +365,67 @@ locationExpr
         }; 
         
 functionExpr
-    :    |   'abs' '(' expr ')' 
+    :   ABS '(' expr ')' 
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(D)D");
         }
-    |   'max' '(' expr ',' expr ')' 
+    |   MAX '(' expr ',' expr ')' 
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "max", "(DD)D");
         }
-    |   'min' '(' expr ',' expr ')' 
+    |   MIN '(' expr ',' expr ')' 
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "min", "(DD)D");
         } 
-    |   'pow' '(' expr ',' expr ')' 
+    |   POW '(' expr ',' expr ')' 
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "pow", "(DD)D");
         } 
-    |   'sqrt' '(' expr ')'
+    |   SQRT '(' expr ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "sqrt", "(D)D");
         } 
-    |   'sin' '(' expr ')'
+    |   SIN '(' expr ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "sin", "(D)D");
         } 
-    |   'cos' '(' expr ')'
+    |   COS '(' expr ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "cos", "(D)D");
         } 
-    |   'tan' '(' expr ')'
+    |   TAN '(' expr ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "tan", "(D)D");
         } 
-    |   'asin' '(' expr ')'
+    |   ASIN '(' expr ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "asin", "(D)D");
         } 
-    |   'acos' '(' expr ')'
+    |   ACOS '(' expr ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "acos", "(D)D");
         } 
-    |   'atan' '(' expr ')'
+    |   ATAN '(' expr ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "atan", "(D)D");
         } 
-    |   'log' '(' expr ')'
+    |   LOG '(' expr ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "log", "(D)D");
         } 
-    |   'exp' '(' expr ')'
+    |   EXP '(' expr ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "exp", "(D)D");
         } 
-    |   'e' '(' ')'
+    |   E '(' ')'
         {
             mv.visitLdcInsn(Double.valueOf(Math.E));
         }
-    |   'pi' '(' ')'
+    |   PI '(' ')'
         {
             mv.visitLdcInsn(Double.valueOf(Math.PI));
         }
-    |   'random' '(' ')'
+    |   RANDOM '(' ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "random", "()D");
         } ;
@@ -439,13 +439,13 @@ specialExpr
         Label failureLabel = null;
         Label exitLabel = null;
     }
-    :   'pixelInRect' '(' expr ',' expr ',' expr ',' expr ')'
+    :   PIXELINRECT '(' expr ',' expr ',' expr ',' expr ')'
         {
         }
-    |   'pixelInCircle' '(' expr ',' expr ')'
+    |   PIXELINCIRCLE '(' expr ',' expr ')'
         {
         }
-    |   'pixelonEdge' '(' expr ')'
+    |   PIXELONEDGE '(' expr ')'
         {
             exitLabel = new Label();
             rightLabel = new Label();
@@ -508,6 +508,31 @@ specialExpr
                        
             mv.visitLabel(exitLabel);
         } ;
+
+ABS             : 'ABS';
+MAX             : 'MAX';
+MIN             : 'MIN';
+POW             : 'POW';
+SQRT            : 'SQRT';
+SIN             : 'SIN';
+COS             : 'COS';
+TAN             : 'TAN';
+ASIN            : 'ASIN';
+ACOS            : 'ACOS';
+ATAN            : 'ATAN';
+LOG             : 'LOG';
+EXP             : 'EXP';
+E               : 'E';
+PI              : 'PI';
+RANDOM          : 'RANDOM';
+PIXELINRECT     : 'PIXELINEDGE';
+PIXELINCIRCLE   : 'PIXELINCIRCLE';
+PIXELONEDGE     : 'PIXELONEDGE';
+X               : 'X';
+Y               : 'Y';
+WIDTH           : 'WIDTH';
+HEIGHT          : 'HEIGHT';
+P               : 'P';
 
 	
 NUMBER :   '0'..'9'+ ( '.' ('0'..'9'+))?;

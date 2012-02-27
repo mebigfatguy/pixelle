@@ -116,7 +116,7 @@ public class PixelleTransformer {
 				currentComponent = entry.getKey().name();
 				currentAlgorithm = entry.getValue();
 
-				CharStream cs = new ANTLRStringStream(currentAlgorithm);
+				CharStream cs = new ANTLRCaseInsensitiveStringStream(currentAlgorithm);
 				PixelleLexer pl = new PixelleLexer(cs);
 				CommonTokenStream tokens = new CommonTokenStream();
 				tokens.setTokenSource(pl);
@@ -178,6 +178,28 @@ public class PixelleTransformer {
 			} catch (IOException ioe) {
 			}
 		}
+	}
+	
+	class ANTLRCaseInsensitiveStringStream extends ANTLRStringStream
+	{
+	    public ANTLRCaseInsensitiveStringStream(String text) throws IOException {
+	        super(text);
+	    }
+	    
+	    public int LA(int i) {
+	        if ( i==0 ) {
+	            return 0;
+	        }
+	        if ( i<0 ) {
+	            i++;
+	        }
+	 
+	        if ( (p+i-1) >= n ) {
+	 
+	            return CharStream.EOF;
+	        }
+	        return Character.toUpperCase(data[p+i-1]);
+	    }
 	}
 
 }
