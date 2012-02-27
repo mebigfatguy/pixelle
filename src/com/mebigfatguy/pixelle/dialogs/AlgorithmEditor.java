@@ -256,7 +256,6 @@ public class AlgorithmEditor extends JDialog {
         
         pixelInRectItem.setEnabled(false);
         pixelInCircleItem.setEnabled(false);
-        pixelOnEdgeItem.setEnabled(false);
         
         specialMenu.add(pixelInRectItem);
         specialMenu.add(pixelInCircleItem);

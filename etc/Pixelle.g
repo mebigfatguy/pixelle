@@ -333,7 +333,7 @@ pixelExpr
         { 
             mv.visitInsn(Opcodes.D2I); 
         } 
-        ']' '.' spec=('r'|'g'|'b'|'t'|'s') 
+        ']' '.' spec=(R|G|B|T|S) 
         {
             String s = $spec.text; 
             mv.visitLdcInsn(Character.valueOf(s.charAt(0))); 
@@ -453,57 +453,57 @@ specialExpr
             bottomLabel = new Label();
             failureLabel = new Label();
             
-            mv.visitInsn(Opcodes.DUP);
-            mv.visitVarInsn(Opcodes.ALOAD, 2);
+            mv.visitInsn(Opcodes.DUP2);
+            mv.visitVarInsn(Opcodes.ILOAD, 2);
             mv.visitInsn(Opcodes.I2D);
             mv.visitInsn(Opcodes.DCMPG);
             mv.visitJumpInsn(Opcodes.IFGE, rightLabel);
-            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.POP2);
             mv.visitInsn(Opcodes.DCONST_1);
             mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
             
             mv.visitLabel(rightLabel);
-            mv.visitInsn(Opcodes.DUP);
+            mv.visitInsn(Opcodes.DUP2);
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "width", "I");
             mv.visitInsn(Opcodes.I2D);
-            mv.visitInsn(Opcodes.SWAP);
             mv.visitInsn(Opcodes.DSUB);
-            mv.visitVarInsn(Opcodes.ALOAD, 2);
+            mv.visitInsn(Opcodes.DNEG);
+            mv.visitVarInsn(Opcodes.ILOAD, 2);
             mv.visitInsn(Opcodes.I2D);
             mv.visitInsn(Opcodes.DCMPG);
             mv.visitJumpInsn(Opcodes.IFLE, topLabel);
-            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.POP2);
             mv.visitInsn(Opcodes.DCONST_1);
             mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
             
             mv.visitLabel(topLabel);
-            mv.visitInsn(Opcodes.DUP);
-            mv.visitVarInsn(Opcodes.ALOAD, 3);
+            mv.visitInsn(Opcodes.DUP2);
+            mv.visitVarInsn(Opcodes.ILOAD, 3);
             mv.visitInsn(Opcodes.I2D);
             mv.visitInsn(Opcodes.DCMPG);
             mv.visitJumpInsn(Opcodes.IFGE, bottomLabel);
-            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.POP2);
             mv.visitInsn(Opcodes.DCONST_1);
             mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
               
             mv.visitLabel(bottomLabel);
-            mv.visitInsn(Opcodes.DUP);
+            mv.visitInsn(Opcodes.DUP2);
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "height", "I");
             mv.visitInsn(Opcodes.I2D);
-            mv.visitInsn(Opcodes.SWAP);
             mv.visitInsn(Opcodes.DSUB);
-            mv.visitVarInsn(Opcodes.ALOAD, 3);
+            mv.visitInsn(Opcodes.DNEG);
+            mv.visitVarInsn(Opcodes.ILOAD, 3);
             mv.visitInsn(Opcodes.I2D);
             mv.visitInsn(Opcodes.DCMPG);
             mv.visitJumpInsn(Opcodes.IFLE, failureLabel);
-            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.POP2);
             mv.visitInsn(Opcodes.DCONST_1);
             mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
             
             mv.visitLabel(failureLabel);
-            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.POP2);
             mv.visitInsn(Opcodes.DCONST_0);  
                        
             mv.visitLabel(exitLabel);
@@ -533,6 +533,11 @@ Y               : 'Y';
 WIDTH           : 'WIDTH';
 HEIGHT          : 'HEIGHT';
 P               : 'P';
+R               : 'R';
+G               : 'G';
+B               : 'B';
+T               : 'T';
+S               : 'S';
 
 	
 NUMBER :   '0'..'9'+ ( '.' ('0'..'9'+))?;
