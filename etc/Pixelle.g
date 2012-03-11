@@ -433,14 +433,64 @@ functionExpr
 specialExpr
     @init
     {
+        Label leftLabel = null;
         Label rightLabel = null;        
         Label topLabel = null;
         Label bottomLabel = null;
         Label failureLabel = null;
+        Label successLabel = null;
         Label exitLabel = null;
     }
     :   PIXELINRECT '(' expr ',' expr ',' expr ',' expr ')'
         {
+            exitLabel = new Label();
+            leftLabel = new Label();
+            rightLabel = new Label();
+            topLabel = new Label();
+            bottomLabel = new Label();
+            successLabel = new Label();
+                
+            mv.visitLabel(rightLabel);        
+            mv.visitVarInsn(Opcodes.ILOAD, 3);
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DCMPG);
+            mv.visitJumpInsn(Opcodes.IFGE, bottomLabel);
+            mv.visitInsn(Opcodes.POP2);
+            mv.visitInsn(Opcodes.POP2);
+            mv.visitInsn(Opcodes.POP2);
+            mv.visitInsn(Opcodes.DCONST_0);
+            mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
+            
+            mv.visitLabel(bottomLabel);                    
+            mv.visitVarInsn(Opcodes.ILOAD, 2);
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DCMPG);
+            mv.visitJumpInsn(Opcodes.IFGE, leftLabel);
+            mv.visitInsn(Opcodes.POP2);
+            mv.visitInsn(Opcodes.POP2);
+            mv.visitInsn(Opcodes.DCONST_0);
+            mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
+            
+            mv.visitLabel(leftLabel);  
+            mv.visitVarInsn(Opcodes.ILOAD, 3);
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DCMPG);
+            mv.visitJumpInsn(Opcodes.IFLT, topLabel);
+            mv.visitInsn(Opcodes.POP2);
+            mv.visitInsn(Opcodes.DCONST_0);
+            mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
+                        
+            mv.visitLabel(topLabel);  
+            mv.visitVarInsn(Opcodes.ILOAD, 2);
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DCMPG);
+            mv.visitJumpInsn(Opcodes.IFLT, successLabel);
+            mv.visitInsn(Opcodes.DCONST_0);
+            mv.visitJumpInsn(Opcodes.GOTO, exitLabel);           
+            
+            mv.visitLabel(successLabel); 
+            mv.visitInsn(Opcodes.DCONST_1);
+            mv.visitLabel(exitLabel);
         }
     |   PIXELINCIRCLE '(' expr ',' expr ')'
         {
@@ -448,11 +498,13 @@ specialExpr
     |   PIXELONEDGE '(' expr ')'
         {
             exitLabel = new Label();
+            leftLabel = new Label();
             rightLabel = new Label();
             topLabel = new Label();
             bottomLabel = new Label();
             failureLabel = new Label();
             
+            mv.visitLabel(leftLabel);
             mv.visitInsn(Opcodes.DUP2);
             mv.visitVarInsn(Opcodes.ILOAD, 2);
             mv.visitInsn(Opcodes.I2D);
@@ -525,7 +577,7 @@ EXP             : 'EXP';
 E               : 'E';
 PI              : 'PI';
 RANDOM          : 'RANDOM';
-PIXELINRECT     : 'PIXELINEDGE';
+PIXELINRECT     : 'PIXELINRECT';
 PIXELINCIRCLE   : 'PIXELINCIRCLE';
 PIXELONEDGE     : 'PIXELONEDGE';
 X               : 'X';
