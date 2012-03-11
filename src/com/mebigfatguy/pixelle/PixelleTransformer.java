@@ -127,7 +127,7 @@ public class PixelleTransformer {
 				pp.pixelle();
 
 				byte[] bytes = pp.getClassBytes();
-				dump(bytes, clsName.substring(clsName.lastIndexOf('.') + 1) + ".class");
+				//dump(bytes, clsName.substring(clsName.lastIndexOf('.') + 1) + ".class");
 
 				pcl.addClass(clsName, bytes);
 				Class<?> cl = pcl.loadClass(clsName);

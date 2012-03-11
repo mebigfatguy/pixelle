@@ -68,6 +68,7 @@ package com.mebigfatguy.pixelle.antlr;
 		mv.visitMaxs(0,0);
 		
 		mv = cw.visitMethod(Opcodes.ACC_PRIVATE, "pixelAverage", "(DDDCLcom/mebigfatguy/pixelle/PixelleEval;)D", null, new String[0]);
+        
 		mv.visitVarInsn(Opcodes.DLOAD, 1);
 		mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J");
 		mv.visitInsn(Opcodes.L2I);
@@ -106,6 +107,7 @@ package com.mebigfatguy.pixelle.antlr;
         mv.visitJumpInsn(Opcodes.GOTO, xBranchBottom);
         Label xBranchTop = new Label();
         mv.visitLabel(xBranchTop);
+                
         mv.visitVarInsn(Opcodes.DLOAD, 12);
         mv.visitVarInsn(Opcodes.ALOAD, 8);
         mv.visitVarInsn(Opcodes.ILOAD, 17);
@@ -114,12 +116,12 @@ package com.mebigfatguy.pixelle.antlr;
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getValue", "(IIC)D");
         mv.visitInsn(Opcodes.DADD);
         mv.visitVarInsn(Opcodes.DSTORE, 12);
-        mv.visitIincInsn(9, 1);
+        mv.visitIincInsn(17, 1);
         mv.visitLabel(xBranchBottom);
         mv.visitVarInsn(Opcodes.ILOAD, 17);
         mv.visitVarInsn(Opcodes.ILOAD, 15);
         mv.visitJumpInsn(Opcodes.IF_ICMPLE, xBranchTop); 
-        mv.visitIincInsn(10, 1);
+        mv.visitIincInsn(16, 1);
         mv.visitLabel(yBranchBottom);
         mv.visitVarInsn(Opcodes.ILOAD, 16);
         mv.visitVarInsn(Opcodes.ILOAD, 14);
