@@ -613,9 +613,61 @@ specialExpr
         }
     |   PIXELAVERAGE '(' expr ',' expr ',' expr ')'
         {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J");
+            mv.visitInsn(Opcodes.L2I);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;");
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
+            mv.visitInsn(Opcodes.SWAP);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z");
             mv.visitInsn(Opcodes.POP);
+            
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J");
+            mv.visitInsn(Opcodes.L2I);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;");
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
+            mv.visitInsn(Opcodes.SWAP);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z");
             mv.visitInsn(Opcodes.POP);
+                        
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J");
+            mv.visitInsn(Opcodes.L2I);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;");
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
+            mv.visitInsn(Opcodes.SWAP);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z");
             mv.visitInsn(Opcodes.POP);
+                        
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
+            mv.visitInsn(Opcodes.ICONST_1);
+            mv.visitInsn(Opcodes.ISUB);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
+            
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
+            mv.visitInsn(Opcodes.ICONST_1);
+            mv.visitInsn(Opcodes.ISUB);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
+
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
+            mv.visitInsn(Opcodes.ICONST_1);
+            mv.visitInsn(Opcodes.ISUB);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
+            
+            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.POP);            
+            mv.visitInsn(Opcodes.POP);
+            
             mv.visitInsn(Opcodes.DCONST_0);
         } ;
 
