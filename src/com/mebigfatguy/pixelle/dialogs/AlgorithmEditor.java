@@ -253,10 +253,12 @@ public class AlgorithmEditor extends JDialog {
         JMenuItem pixelInRectItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.PIXEL_IN_RECT));
         JMenuItem pixelInCircleItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.PIXEL_IN_CIRCLE));
         JMenuItem pixelOnEdgeItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.PIXEL_ON_EDGE));
+        JMenuItem pixelAverageItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.PIXEL_AVERAGE));
         
         specialMenu.add(pixelInRectItem);
         specialMenu.add(pixelInCircleItem);
         specialMenu.add(pixelOnEdgeItem);
+        specialMenu.add(pixelAverageItem);
         
         shortcuts.add(specialMenu);
 
@@ -307,8 +309,9 @@ public class AlgorithmEditor extends JDialog {
 		addSimpleShortCutListener(randomItem, "random()");
 		
 		addSimpleShortCutListener(pixelInRectItem, "pixelInRect(t,l,b.r)");
-		addSimpleShortCutListener(pixelInCircleItem, "pixelInCircle(x,y,r");
+		addSimpleShortCutListener(pixelInCircleItem, "pixelInCircle(x,y,r)");
 		addSimpleShortCutListener(pixelOnEdgeItem, "pixelOnEdge(e)");
+		addSimpleShortCutListener(pixelOnEdgeItem, "pixelAverage(x,y,s)");
 	}
 
 	private void addSimpleShortCutListener(JMenuItem mi, final String sc) {

@@ -146,6 +146,7 @@ public class PixelleBundle {
 	public static final String PIXEL_IN_RECT = "label.pixelInRect";
 	public static final String PIXEL_IN_CIRCLE = "label.pixelInCircle";
 	public static final String PIXEL_ON_EDGE = "label.pixelOnEdge";
+	public static final String PIXEL_AVERAGE = "label.pixelAverage";
 
 
 	private static ResourceBundle rb = ResourceBundle.getBundle("com/mebigfatguy/pixelle/resources/pixelle");

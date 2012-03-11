@@ -1,6 +1,6 @@
 /*
  * pixelle - Graphics algorithmic editor
- * Copyright (C) 2008 Dave Brosius
+ * Copyright (C) 2008-2012 Dave Brosius
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -610,7 +610,15 @@ specialExpr
             mv.visitInsn(Opcodes.DCONST_0);  
                        
             mv.visitLabel(exitLabel);
+        }
+    |   PIXELAVERAGE '(' expr ',' expr ',' expr ')'
+        {
+            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.POP);
+            mv.visitInsn(Opcodes.DCONST_0);
         } ;
+
 
 ABS             : 'ABS';
 MAX             : 'MAX';
@@ -623,7 +631,7 @@ TAN             : 'TAN';
 ASIN            : 'ASIN';
 ACOS            : 'ACOS';
 ATAN            : 'ATAN';
-LOG             : 'LOG';
+LOG             : 'LOG';    
 EXP             : 'EXP';
 E               : 'E';
 PI              : 'PI';
@@ -631,6 +639,7 @@ RANDOM          : 'RANDOM';
 PIXELINRECT     : 'PIXELINRECT';
 PIXELINCIRCLE   : 'PIXELINCIRCLE';
 PIXELONEDGE     : 'PIXELONEDGE';
+PIXELAVERAGE    : 'PIXELAVERAGE';
 X               : 'X';
 Y               : 'Y';
 WIDTH           : 'WIDTH';
