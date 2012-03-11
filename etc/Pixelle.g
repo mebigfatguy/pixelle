@@ -44,10 +44,16 @@ package com.mebigfatguy.pixelle.antlr;
 
 		cw.visitField(Opcodes.ACC_PRIVATE, "width", "I", null, Integer.valueOf(0));
 		cw.visitField(Opcodes.ACC_PRIVATE, "height", "I", null, Integer.valueOf(0));
+		cw.visitField(Opcodes.ACC_PRIVATE, "stack", "Ljava/util/List;", "Ljava/lang/List<Ljava/lang/Double;>;", null);
 		
 		mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, new String[0]);
 		mv.visitVarInsn(Opcodes.ALOAD, 0);
 		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
+		mv.visitVarInsn(Opcodes.ALOAD, 0);
+		mv.visitTypeInsn(Opcodes.NEW, "java/util/ArrayList");
+        mv.visitInsn(Opcodes.DUP);
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/util/ArrayList", "<init>", "()V");
+        mv.visitFieldInsn(Opcodes.PUTFIELD, clz, "stack", "Ljava/util/List;"); 
 		mv.visitInsn(Opcodes.RETURN);
 		mv.visitMaxs(0,0);
 		
@@ -492,8 +498,53 @@ specialExpr
             mv.visitInsn(Opcodes.DCONST_1);
             mv.visitLabel(exitLabel);
         }
-    |   PIXELINCIRCLE '(' expr ',' expr ')'
+    |   PIXELINCIRCLE '(' expr ',' expr ',' expr ')'
         {
+            successLabel = new Label();
+            exitLabel = new Label();
+
+            mv.visitInsn(Opcodes.DUP2);
+            mv.visitInsn(Opcodes.DMUL);
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
+            mv.visitInsn(Opcodes.DUP_X2);
+            mv.visitInsn(Opcodes.POP);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z");
+            mv.visitInsn(Opcodes.POP);
+            
+            mv.visitVarInsn(Opcodes.ILOAD, 3);
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DSUB);
+            mv.visitInsn(Opcodes.DUP2);
+            mv.visitInsn(Opcodes.DMUL);
+            mv.visitInsn(Opcodes.DUP2_X2);
+            mv.visitInsn(Opcodes.POP2);
+            
+            mv.visitVarInsn(Opcodes.ILOAD, 2);
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DSUB);
+            mv.visitInsn(Opcodes.DUP2);
+            mv.visitInsn(Opcodes.DMUL);
+            mv.visitInsn(Opcodes.DADD);
+            
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
+            mv.visitInsn(Opcodes.ICONST_1);
+            mv.visitInsn(Opcodes.ISUB);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
+            mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D");
+            mv.visitInsn(Opcodes.DCMPG);
+            mv.visitJumpInsn(Opcodes.IFLT, successLabel);
+            mv.visitInsn(Opcodes.DCONST_0);
+            mv.visitJumpInsn(Opcodes.GOTO, exitLabel);
+            
+            mv.visitLabel(successLabel);
+            mv.visitInsn(Opcodes.DCONST_1);         
+            mv.visitLabel(exitLabel);
         }
     |   PIXELONEDGE '(' expr ')'
         {
