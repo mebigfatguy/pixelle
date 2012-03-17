@@ -132,7 +132,7 @@ package com.mebigfatguy.pixelle.antlr;
         mv.visitInsn(Opcodes.IMUL);
         mv.visitInsn(Opcodes.ICONST_1);
         mv.visitInsn(Opcodes.IADD);
-        mv.visitInsn(Opcodes.ICONST_2);
+        mv.visitInsn(Opcodes.DUP);
         mv.visitInsn(Opcodes.IMUL);
         mv.visitInsn(Opcodes.I2D);
         mv.visitInsn(Opcodes.DDIV);
