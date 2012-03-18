@@ -15,7 +15,7 @@
       <all-permissions/> 
   </security> 
   <resources> 
-    <j2se version="1.5+" initial-heap-size="500m" max-heap-size="1200m"/>
+    <j2se version="1.6+" initial-heap-size="500m" max-heap-size="1200m"/>
     <jar href="pixelle-$VERSION.jar"/>
     <jar href="antlr-runtime-3.4.jar"/> 
     <jar href="asm-3.3.1.jar"/> 
