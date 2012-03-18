@@ -16,10 +16,10 @@
   </security> 
   <resources> 
     <j2se version="1.6+" initial-heap-size="500m" max-heap-size="1200m"/>
-    <jar href="pixelle-$VERSION.jar"/>
-    <jar href="antlr-runtime-3.4.jar"/> 
-    <jar href="asm-3.3.1.jar"/> 
-    <jar href="stringtemplate-4.0.2.jar"/> 
+    <jar href="/jnlp/pixelle-$VERSION.jar"/>
+    <jar href="/jnlp/antlr-runtime-3.4.jar"/> 
+    <jar href="/jnlp/asm-3.3.1.jar"/> 
+    <jar href="/jnlp/stringtemplate-4.0.2.jar"/> 
   </resources> 
   <application-desc main-class="com.mebigfatguy.pixelle.Pixelle"/> 
 </jnlp> 
