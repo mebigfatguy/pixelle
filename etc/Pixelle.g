@@ -107,7 +107,6 @@ package com.mebigfatguy.pixelle.antlr;
         mv.visitJumpInsn(Opcodes.GOTO, xBranchBottom);
         Label xBranchTop = new Label();
         mv.visitLabel(xBranchTop);
-                
         mv.visitVarInsn(Opcodes.DLOAD, 12);
         mv.visitVarInsn(Opcodes.ALOAD, 8);
         mv.visitVarInsn(Opcodes.ILOAD, 17);
@@ -723,7 +722,7 @@ specialExpr
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP);
             mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
-            mv.visitInsn(Opcodes.ICONST_4);
+            mv.visitInsn(Opcodes.ICONST_1);
             mv.visitInsn(Opcodes.ISUB);
             mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
             mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
@@ -733,7 +732,7 @@ specialExpr
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP);
             mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
-            mv.visitInsn(Opcodes.ICONST_3);
+            mv.visitInsn(Opcodes.ICONST_1);
             mv.visitInsn(Opcodes.ISUB);
             mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
             mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
@@ -743,7 +742,7 @@ specialExpr
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP);
             mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
-            mv.visitInsn(Opcodes.ICONST_2);
+            mv.visitInsn(Opcodes.ICONST_1);
             mv.visitInsn(Opcodes.ISUB);
             mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
             mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
