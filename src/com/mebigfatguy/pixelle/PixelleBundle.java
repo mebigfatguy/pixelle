@@ -142,6 +142,8 @@ public class PixelleBundle {
 	public static final String E = "label.e";
 	public static final String PI = "label.pi";
 	public static final String RANDOM = "label.random";
+	public static final String TO_DEGREES = "label.toDegrees";
+	public static final String TO_RADIANS = "label.toRadians";
 	public static final String SPECIAL = "label.special";
 	public static final String PIXEL_IN_RECT = "label.pixelInRect";
 	public static final String PIXEL_IN_CIRCLE = "label.pixelInCircle";

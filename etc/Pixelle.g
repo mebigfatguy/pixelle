@@ -505,6 +505,14 @@ functionExpr
     |   RANDOM '(' ')'
         {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "random", "()D");
+        } 
+    |   TODEGREES '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "toDegrees", "(D)D");
+        } 
+    |   TORADIANS '(' expr ')'
+        {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "toRadians", "(D)D");
         } ;
         
 specialExpr
@@ -790,6 +798,8 @@ EXP             : 'EXP';
 E               : 'E';
 PI              : 'PI';
 RANDOM          : 'RANDOM';
+TODEGREES       : 'TODEGREES';
+TORADIANS       : 'TORADIANS';
 PIXELINRECT     : 'PIXELINRECT';
 PIXELINCIRCLE   : 'PIXELINCIRCLE';
 PIXELONEDGE     : 'PIXELONEDGE';

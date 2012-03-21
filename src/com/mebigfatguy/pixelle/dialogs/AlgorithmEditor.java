@@ -229,7 +229,9 @@ public class AlgorithmEditor extends JDialog {
 		JMenuItem eItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.E));
 		JMenuItem piItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.PI));
 		JMenuItem randomItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.RANDOM));
-
+		JMenuItem toDegreesItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.TO_DEGREES));
+        JMenuItem toRadiansItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.TO_RADIANS));
+        
 		functionMenu.add(absItem);
 		functionMenu.add(maxItem);
 		functionMenu.add(minItem);
@@ -246,6 +248,8 @@ public class AlgorithmEditor extends JDialog {
 		functionMenu.add(eItem);
 		functionMenu.add(piItem);
 		functionMenu.add(randomItem);
+		functionMenu.add(toDegreesItem);
+	    functionMenu.add(toRadiansItem);
 
 		shortcuts.add(functionMenu);
 		
@@ -307,7 +311,9 @@ public class AlgorithmEditor extends JDialog {
 		addSimpleShortCutListener(eItem, "e()");
 		addSimpleShortCutListener(piItem, "pi()");
 		addSimpleShortCutListener(randomItem, "random()");
-		
+		addSimpleShortCutListener(toDegreesItem, "toDegrees(r)");
+        addSimpleShortCutListener(toRadiansItem, "toRadians(d)");
+        
 		addSimpleShortCutListener(pixelInRectItem, "pixelInRect(t,l,b,r)");
 		addSimpleShortCutListener(pixelInCircleItem, "pixelInCircle(x,y,radius)");
 		addSimpleShortCutListener(pixelOnEdgeItem, "pixelOnEdge(e)");
