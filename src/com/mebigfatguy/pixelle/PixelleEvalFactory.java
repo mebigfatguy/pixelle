@@ -93,8 +93,9 @@ public class PixelleEvalFactory {
 				
 			case BufferedImage.TYPE_CUSTOM:
 				return new PixelleEvalCustom(image, ioobOption, coobOption);
+				
+			default:
+			    return new PixelleEval4ByteABGR(image, ioobOption, coobOption);
 		}
-		
-		throw new IllegalArgumentException("Unknown image type: " + image.getType());
 	}
 }
