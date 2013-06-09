@@ -34,6 +34,7 @@ import com.mebigfatguy.pixelle.PixelleImage;
 import com.mebigfatguy.pixelle.PixelleTransformException;
 import com.mebigfatguy.pixelle.PixelleTransformer;
 import com.mebigfatguy.pixelle.dialogs.PixelleExpressionDialog;
+import com.mebigfatguy.pixelle.dialogs.TransformExceptionDialog;
 
 public class TransformAction extends AbstractAction {
 	
@@ -75,7 +76,10 @@ public class TransformAction extends AbstractAction {
 			}
 		} catch (PixelleTransformException pe) {
 			pe.printStackTrace();
-			JOptionPane.showMessageDialog(frame, pe.getMessage());
+			TransformExceptionDialog d = new TransformExceptionDialog(pe);
+			d.setModal(true);
+			d.setLocationRelativeTo(frame);
+			d.setVisible(true);
 		}
 	}
 }

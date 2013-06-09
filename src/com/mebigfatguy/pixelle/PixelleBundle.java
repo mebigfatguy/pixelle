@@ -88,6 +88,7 @@ public class PixelleBundle {
 	public static final String ROLL_COLOR = "label.roll_color";
 	public static final String WAVE_COLOR = "label.wave_color";
 	public static final String SAVE_OVERWRITE = "label.save_overwrite";
+	public static final String FAILED_TRANFORMATION = "label.failed_transformation";
 	public static final String X = "label.x";
 	public static final String Y = "label.y";
 	public static final String COLOR = "label.color";
