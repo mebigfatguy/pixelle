@@ -19,13 +19,29 @@
 package com.mebigfatguy.pixelle;
 
 public class PixelleTransformException extends Exception {
-	private static final long serialVersionUID = -7209029044223677078L;
+    private static final long serialVersionUID = -7209029044223677078L;
 
-	public PixelleTransformException(String message) {
-		super(message);
-	}
-	
-	public PixelleTransformException(String message, Throwable initCause) {
-		super(message, initCause);
-	}
+    private String component;
+    private String algorithm;
+    private int position;
+
+    public PixelleTransformException(String comp, String algo, int pos,
+            Throwable orig) {
+        super("Failed to transform the image: " + comp + ": [" + algo  + "] at position: " + pos, orig);
+        component = comp;
+        algorithm = algo;
+        position = pos;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    public int getPosition() {
+        return position;
+    }
 }

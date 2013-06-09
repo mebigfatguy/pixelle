@@ -31,6 +31,8 @@ import java.util.Map;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.NoViableAltException;
+import org.antlr.runtime.RecognitionException;
 
 import com.mebigfatguy.pixelle.antlr.PixelleLexer;
 import com.mebigfatguy.pixelle.antlr.PixelleParser;
@@ -149,8 +151,10 @@ public class PixelleTransformer {
 			destImage.finishImage();
 
 			return destImage;
+		} catch (RecognitionException re) {
+		    throw new PixelleTransformException(currentComponent, currentAlgorithm, re.charPositionInLine, re);
 		} catch (Exception e) {
-			throw new PixelleTransformException("Failed to transform the image: " + currentComponent + ": " + currentAlgorithm, e);
+			throw new PixelleTransformException(currentComponent, currentAlgorithm, -1, e);
 		}
 	}
 
