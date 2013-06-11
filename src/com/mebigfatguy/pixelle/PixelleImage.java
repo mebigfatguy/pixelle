@@ -51,12 +51,17 @@ public class PixelleImage {
 		selection = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_BINARY, model);
 		composite = AlphaComposite.getInstance(AlphaComposite.XOR, 1.0f);
 		Graphics g = selection.getGraphics();
-		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		selectionOutline = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_BINARY, model);
-		g = selectionOutline.getGraphics();
-		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, getWidth(), getHeight());	}
+		try {
+    		g.setColor(Color.WHITE);
+    		g.fillRect(0, 0, getWidth(), getHeight());
+    		selectionOutline = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_BINARY, model);
+    		g = selectionOutline.getGraphics();
+    		g.setColor(Color.WHITE);
+    		g.fillRect(0, 0, getWidth(), getHeight());	
+    	} finally {
+    	    g.dispose();
+    	}
+	}
 
 	public BufferedImage getSaveImage() {
 		return image;
