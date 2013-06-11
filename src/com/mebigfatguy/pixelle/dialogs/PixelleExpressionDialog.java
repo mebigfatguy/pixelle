@@ -526,7 +526,7 @@ public class PixelleExpressionDialog extends JDialog {
 			return selectedImages;
 		}
 
-		public void initComponents() {
+		private final void initComponents() {
 			setLayout(new BorderLayout(4, 4));
 
 			sourceModel = new DefaultTableModel();
@@ -573,7 +573,7 @@ public class PixelleExpressionDialog extends JDialog {
 			setBorder(BorderFactory.createTitledBorder(PixelleBundle.getString(PixelleBundle.SOURCES_LABEL)));
 		}
 
-		public void initListeners() {
+		private final void initListeners() {
 			addButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					Set<JFrame> frames = FrameMgr.getInstance().getFrames();
