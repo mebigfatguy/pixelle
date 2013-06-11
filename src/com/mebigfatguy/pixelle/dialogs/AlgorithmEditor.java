@@ -317,7 +317,7 @@ public class AlgorithmEditor extends JDialog {
 		addSimpleShortCutListener(pixelInRectItem, "pixelInRect(t,l,b,r)");
 		addSimpleShortCutListener(pixelInCircleItem, "pixelInCircle(x,y,radius)");
 		addSimpleShortCutListener(pixelOnEdgeItem, "pixelOnEdge(e)");
-		addSimpleShortCutListener(pixelOnEdgeItem, "pixelAverage(x, y, size, source, color)");
+		addSimpleShortCutListener(pixelAverageItem, "pixelAverage(x, y, size, source, color)");
 	}
 
 	private void addSimpleShortCutListener(JMenuItem mi, final String sc) {
