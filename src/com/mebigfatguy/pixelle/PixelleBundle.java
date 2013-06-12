@@ -92,6 +92,7 @@ public class PixelleBundle {
 	public static final String X = "label.x";
 	public static final String Y = "label.y";
 	public static final String COLOR = "label.color";
+	public static final String TRANSPARENCY = "label.transparency";
 	public static final String INSPECTOR_TOOLTIP = "tooltip.inspector";
 	public static final String RGB = "label.rgb";
 	public static final String GRAYSCALE = "label.grayscale";

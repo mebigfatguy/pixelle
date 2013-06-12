@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -351,7 +352,7 @@ public class PixelleFrame extends JFrame {
 							if ((p.x >= 0) && (p.y >= 0) && (p.x < iWidth) && (p.y < iHeight)) {
 								inspector.setInspectorPosition(p);
 								image.getSaveImage().getData().getPixel(p.x, p.y, color);
-								inspector.setInspectorColor(new Color(color[0], color[1], color[2]));
+								inspector.setInspectorColor(new Color(color[0], color[1], color[2]), color[3]);
 							}
 						}
 					}

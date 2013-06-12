@@ -27,6 +27,7 @@ import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -47,6 +48,7 @@ public class PixelInspector extends JFrame {
 	private JTextField xField;
 	private JTextField yField;
 	private JTextField colorField;
+	private JTextField transparencyField;
 	private final StringBuilder sb = new StringBuilder();
 	
 	public PixelInspector(PixelleFrame pf) {
@@ -65,7 +67,7 @@ public class PixelInspector extends JFrame {
 		});
 	}
 	
-	public void setInspectorColor(final Color c) {
+	public void setInspectorColor(final Color c, final int transparency) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				sb.setLength(0);
@@ -75,6 +77,7 @@ public class PixelInspector extends JFrame {
 				sb.append(",");
 				sb.append(c.getBlue());
 				colorField.setText(sb.toString());
+				transparencyField.setText(String.valueOf(transparency));
 				swatchPanel.setBackground(c);
 				swatchPanel.repaint();
 			}
@@ -95,37 +98,50 @@ public class PixelInspector extends JFrame {
 		JLabel xLabel = new JLabel(PixelleBundle.getString(PixelleBundle.X));
 		JLabel yLabel = new JLabel(PixelleBundle.getString(PixelleBundle.Y));
 		JLabel colorLabel = new JLabel(PixelleBundle.getString(PixelleBundle.COLOR));
-		GuiUtils.sizeUniformly(Sizing.Both, xLabel, yLabel, colorLabel);
+		JLabel transparencyLabel = new JLabel(PixelleBundle.getString(PixelleBundle.TRANSPARENCY));
+		GuiUtils.sizeUniformly(Sizing.Both, xLabel, yLabel, colorLabel, transparencyLabel);
 		
 		xField = new JTextField(7);
 		yField = new JTextField(7);
 		colorField = new JTextField(7);
-		GuiUtils.sizeUniformly(Sizing.Both, xField, yField, colorField);
+		transparencyField = new JTextField(7);
+		GuiUtils.sizeUniformly(Sizing.Both, xField, yField, colorField, transparencyField);
 		
 		xField.setEditable(false);
 		yField.setEditable(false);
 		colorField.setEditable(false);
+		transparencyField.setEditable(false);
 		
 		xLabel.setLabelFor(xField);
 		yLabel.setLabelFor(yField);
 		colorLabel.setLabelFor(colorField);
+		transparencyLabel.setLabelFor(transparencyField);
 		
 		JPanel xPanel = new JPanel();
 		xPanel.setLayout(new BoxLayout(xPanel, BoxLayout.X_AXIS));
 		xPanel.add(xLabel);
+		xPanel.add(Box.createHorizontalStrut(10));
 		xPanel.add(xField);		
 		JPanel yPanel = new JPanel();
 		yPanel.setLayout(new BoxLayout(yPanel, BoxLayout.X_AXIS));
 		yPanel.add(yLabel);
+        yPanel.add(Box.createHorizontalStrut(10));
 		yPanel.add(yField);
 		JPanel colorPanel = new JPanel();
 		colorPanel.setLayout(new BoxLayout(colorPanel, BoxLayout.X_AXIS));
 		colorPanel.add(colorLabel);
+		colorPanel.add(Box.createHorizontalStrut(10));
 		colorPanel.add(colorField);
+		JPanel transparencyPanel = new JPanel();
+		transparencyPanel.setLayout(new BoxLayout(transparencyPanel, BoxLayout.X_AXIS));
+		transparencyPanel.add(transparencyLabel);
+		transparencyPanel.add(Box.createHorizontalStrut(10));
+		transparencyPanel.add(transparencyField);
 		
 		infoPanel.add(xPanel);
 		infoPanel.add(yPanel);
 		infoPanel.add(colorPanel);
+		infoPanel.add(transparencyPanel);
 		
 		cp.add(infoPanel, BorderLayout.CENTER);
 		pack();
