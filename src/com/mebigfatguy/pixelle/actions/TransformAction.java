@@ -18,13 +18,13 @@
  */
 package com.mebigfatguy.pixelle.actions;
 
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import com.mebigfatguy.pixelle.ImageType;
@@ -54,6 +54,7 @@ public class TransformAction extends AbstractAction {
 			d.setModal(true);
 			d.setVisible(true);
 			if (d.isOK()) {
+			    frame.setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				ImageType imageType = d.getImageType();
 				PixelleImage[] srcImages = d.getSourceImages();
 				PixelleTransformer transformer = new PixelleTransformer(srcImages, d.getAlgorithms(imageType), imageType, d.getOutputSize());
@@ -80,6 +81,8 @@ public class TransformAction extends AbstractAction {
 			d.setModal(true);
 			d.setLocationRelativeTo(frame);
 			d.setVisible(true);
+		} finally {
+            frame.setCursor(Cursor.getDefaultCursor());
 		}
 	}
 }
