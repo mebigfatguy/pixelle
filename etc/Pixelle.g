@@ -781,7 +781,7 @@ specialExpr
         }
     |   INVERSEX  '(' expr ',' expr ')'
         {
-            mv.visitInsn(Opcodes.DUP2_X2);
+            mv.visitVarInsn(Opcodes.DSTORE, 5);
             mv.visitInsn(Opcodes.D2I);
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
             mv.visitVarInsn(Opcodes.ILOAD, 4);
@@ -791,18 +791,16 @@ specialExpr
             mv.visitInsn(Opcodes.AALOAD);
             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getWidth", "()I");
             mv.visitInsn(Opcodes.I2D);
+            mv.visitVarInsn(Opcodes.DLOAD, 5);
             mv.visitInsn(Opcodes.DMUL);
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "width", "I");
             mv.visitInsn(Opcodes.I2D);
-            mv.visitInsn(Opcodes.DDIV);
-            mv.visitVarInsn(Opcodes.DSTORE, 5);
-            mv.visitInsn(Opcodes.POP2);
-            mv.visitVarInsn(Opcodes.DLOAD, 5);
+            mv.visitInsn(Opcodes.DDIV);  
         }
     |   INVERSEY  '(' expr ',' expr ')'
         {
-            mv.visitInsn(Opcodes.DUP2_X2);
+            mv.visitVarInsn(Opcodes.DSTORE, 5);
             mv.visitInsn(Opcodes.D2I);
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
             mv.visitVarInsn(Opcodes.ILOAD, 4);
@@ -812,14 +810,12 @@ specialExpr
             mv.visitInsn(Opcodes.AALOAD);
             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getHeight", "()I");
             mv.visitInsn(Opcodes.I2D);
+            mv.visitVarInsn(Opcodes.DLOAD, 5);
             mv.visitInsn(Opcodes.DMUL);
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "height", "I");
             mv.visitInsn(Opcodes.I2D);
-            mv.visitInsn(Opcodes.DDIV);
-            mv.visitVarInsn(Opcodes.DSTORE, 5);
-            mv.visitInsn(Opcodes.POP2);
-            mv.visitVarInsn(Opcodes.DLOAD, 5);
+            mv.visitInsn(Opcodes.DDIV);  
         } ;
 
 
