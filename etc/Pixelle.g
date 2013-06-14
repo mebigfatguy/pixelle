@@ -783,6 +783,7 @@ specialExpr
         {
             mv.visitInsn(Opcodes.DUP2_X2);
             mv.visitInsn(Opcodes.D2I);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
             mv.visitVarInsn(Opcodes.ILOAD, 4);
             mv.visitInsn(Opcodes.IREM);
             mv.visitVarInsn(Opcodes.ALOAD, 1);
@@ -803,6 +804,7 @@ specialExpr
         {
             mv.visitInsn(Opcodes.DUP2_X2);
             mv.visitInsn(Opcodes.D2I);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
             mv.visitVarInsn(Opcodes.ILOAD, 4);
             mv.visitInsn(Opcodes.IREM);
             mv.visitVarInsn(Opcodes.ALOAD, 1);
