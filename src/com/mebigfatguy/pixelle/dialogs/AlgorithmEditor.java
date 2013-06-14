@@ -258,11 +258,15 @@ public class AlgorithmEditor extends JDialog {
         JMenuItem pixelInCircleItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.PIXEL_IN_CIRCLE));
         JMenuItem pixelOnEdgeItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.PIXEL_ON_EDGE));
         JMenuItem pixelAverageItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.PIXEL_AVERAGE));
-        
+        JMenuItem inverseXItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.INVERSE_X));
+        JMenuItem inverseYItem = new JMenuItem(PixelleBundle.getString(PixelleBundle.INVERSE_Y));
+
         specialMenu.add(pixelInRectItem);
         specialMenu.add(pixelInCircleItem);
         specialMenu.add(pixelOnEdgeItem);
         specialMenu.add(pixelAverageItem);
+        specialMenu.add(inverseXItem);
+        specialMenu.add(inverseYItem);
         
         shortcuts.add(specialMenu);
 
@@ -318,6 +322,8 @@ public class AlgorithmEditor extends JDialog {
 		addSimpleShortCutListener(pixelInCircleItem, "pixelInCircle(x,y,radius)");
 		addSimpleShortCutListener(pixelOnEdgeItem, "pixelOnEdge(e)");
 		addSimpleShortCutListener(pixelAverageItem, "pixelAverage(x, y, size, source, color)");
+		addSimpleShortCutListener(inverseXItem, "inverseX(source, x)");
+	    addSimpleShortCutListener(inverseYItem, "inverseY(source, y)");
 	}
 
 	private void addSimpleShortCutListener(JMenuItem mi, final String sc) {

@@ -769,8 +769,7 @@ specialExpr
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J");
             mv.visitInsn(Opcodes.L2I);
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
-            mv.visitVarInsn(Opcodes.ALOAD, 1);
-            mv.visitInsn(Opcodes.ARRAYLENGTH);
+            mv.visitVarInsn(Opcodes.ILOAD, 4);
             mv.visitInsn(Opcodes.IREM);
             mv.visitVarInsn(Opcodes.ALOAD, 1);
             mv.visitInsn(Opcodes.SWAP);
@@ -779,6 +778,46 @@ specialExpr
             mv.visitLdcInsn(Character.valueOf(s.charAt(0))); 
             mv.visitInsn(Opcodes.SWAP);
             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, clz, "pixelAverage", "(DDDCLcom/mebigfatguy/pixelle/PixelleEval;)D");
+        }
+    |   INVERSEX  '(' expr ',' expr ')'
+        {
+            mv.visitInsn(Opcodes.DUP2_X2);
+            mv.visitInsn(Opcodes.D2I);
+            mv.visitVarInsn(Opcodes.ILOAD, 4);
+            mv.visitInsn(Opcodes.IREM);
+            mv.visitVarInsn(Opcodes.ALOAD, 1);
+            mv.visitInsn(Opcodes.SWAP);
+            mv.visitInsn(Opcodes.AALOAD);
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getWidth", "()I");
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DMUL);
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "width", "I");
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DDIV);
+            mv.visitVarInsn(Opcodes.DSTORE, 5);
+            mv.visitInsn(Opcodes.POP2);
+            mv.visitVarInsn(Opcodes.DLOAD, 5);
+        }
+    |   INVERSEY  '(' expr ',' expr ')'
+        {
+            mv.visitInsn(Opcodes.DUP2_X2);
+            mv.visitInsn(Opcodes.D2I);
+            mv.visitVarInsn(Opcodes.ILOAD, 4);
+            mv.visitInsn(Opcodes.IREM);
+            mv.visitVarInsn(Opcodes.ALOAD, 1);
+            mv.visitInsn(Opcodes.SWAP);
+            mv.visitInsn(Opcodes.AALOAD);
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getHeight", "()I");
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DMUL);
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, clz, "height", "I");
+            mv.visitInsn(Opcodes.I2D);
+            mv.visitInsn(Opcodes.DDIV);
+            mv.visitVarInsn(Opcodes.DSTORE, 5);
+            mv.visitInsn(Opcodes.POP2);
+            mv.visitVarInsn(Opcodes.DLOAD, 5);
         } ;
 
 
@@ -804,6 +843,8 @@ PIXELINRECT     : 'PIXELINRECT';
 PIXELINCIRCLE   : 'PIXELINCIRCLE';
 PIXELONEDGE     : 'PIXELONEDGE';
 PIXELAVERAGE    : 'PIXELAVERAGE';
+INVERSEX        : 'INVERSEX';
+INVERSEY        : 'INVERSEY';
 X               : 'X';
 Y               : 'Y';
 WIDTH           : 'WIDTH';
