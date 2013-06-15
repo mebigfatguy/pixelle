@@ -22,7 +22,6 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.EnumMap;
@@ -181,7 +180,7 @@ public class PixelleTransformer {
 	
 	class ANTLRCaseInsensitiveStringStream extends ANTLRStringStream
 	{
-	    public ANTLRCaseInsensitiveStringStream(String text) throws IOException {
+	    public ANTLRCaseInsensitiveStringStream(String text) {
 	        super(text);
 	    }
 	    
