@@ -31,13 +31,13 @@ import java.util.Map;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.NoViableAltException;
 import org.antlr.runtime.RecognitionException;
 
 import com.mebigfatguy.pixelle.antlr.PixelleLexer;
 import com.mebigfatguy.pixelle.antlr.PixelleParser;
 import com.mebigfatguy.pixelle.eval.PixelleEval4ByteABGR;
 import com.mebigfatguy.pixelle.eval.PixelleEvalByteGray;
+import com.mebigfatguy.pixelle.utils.Closer;
 
 /**
  * transforms one bitmap into another based on the algorithms defined by the user.
@@ -175,12 +175,7 @@ public class PixelleTransformer {
 		}
 		finally
 		{
-			try {
-				if (fos != null) {
-					fos.close();
-				}
-			} catch (IOException ioe) {
-			}
+		    Closer.close(fos);
 		}
 	}
 	
