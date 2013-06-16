@@ -99,7 +99,7 @@ public class PixelleExpressionDialog extends JDialog {
 	private final Map<PixelleComponent, JLabel> gsLHS = new EnumMap<PixelleComponent, JLabel>(PixelleComponent.class);
 	{
 		for (PixelleComponent comp : PixelleComponent.gsValues()) {
-			gsLHS.put(comp, new JLabel(PixelleBundle.getString("formula." + comp.name().toLowerCase()) + " = "));
+			gsLHS.put(comp, new JLabel(PixelleBundle.getFormattedString(PixelleBundle.PIXEL_EQUALS, PixelleBundle.getString("formula." + comp.name().toLowerCase()))));
 		}
 	}
 
