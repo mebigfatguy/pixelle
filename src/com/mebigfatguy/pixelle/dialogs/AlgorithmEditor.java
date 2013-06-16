@@ -98,6 +98,8 @@ public class AlgorithmEditor extends JDialog {
 		shortcutTrigger.setOpaque(true);
 
 		buildShortCutsMenu();
+		
+		shortcutTrigger.setLabelFor(shortcuts);
 
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
