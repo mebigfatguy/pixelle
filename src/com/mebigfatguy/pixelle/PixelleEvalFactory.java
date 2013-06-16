@@ -19,6 +19,13 @@
 package com.mebigfatguy.pixelle;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import com.mebigfatguy.pixelle.eval.PixelleEval3ByteBGR;
 import com.mebigfatguy.pixelle.eval.PixelleEval4ByteABGR;
@@ -28,6 +35,7 @@ import com.mebigfatguy.pixelle.eval.PixelleEvalIndexed;
 import com.mebigfatguy.pixelle.eval.PixelleEvalIntARGB;
 import com.mebigfatguy.pixelle.eval.PixelleEvalIntBGR;
 import com.mebigfatguy.pixelle.eval.PixelleEvalIntRGB;
+import com.mebigfatguy.pixelle.utils.Closer;
 
 /**
  * factory for creating pixel evaluation instances based on the type of image that is
@@ -39,6 +47,34 @@ public class PixelleEvalFactory {
 	private static ColorOutOfBoundsOption coobOption = ColorOutOfBoundsOption.Clip;
 	
 	private PixelleEvalFactory() {
+	}
+	
+	public static void loadSettings() {
+	    ObjectInputStream ois = null;
+	    try {
+	        File f = new File(new File(System.getProperty("user.home"), ".pixelle"), "pef.ser");
+	        ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(f)));
+	        ioobOption = (IndexOutOfBoundsOption) ois.readObject();
+	        coobOption = (ColorOutOfBoundsOption) ois.readObject();
+	    } catch (Exception e) {  
+	    } finally {
+	        Closer.close(ois);
+	    }
+	}
+	
+	public static void saveSettings() {
+	    ObjectOutputStream oos = null;
+	    try {
+    	    File f = new File(System.getProperty("user.home"), ".pixelle");
+    	    f.mkdir();
+    	    f = new File(f, "pef.ser");
+    	    oos = new ObjectOutputStream( new BufferedOutputStream(new FileOutputStream(f)));
+    	    oos.writeObject(ioobOption);
+    	    oos.writeObject(coobOption);
+	    } catch (Exception e) {   
+	    } finally {
+	        Closer.close(oos);
+	    }
 	}
 	
 	public static IndexOutOfBoundsOption getIndexOutOfBoundsOption() {

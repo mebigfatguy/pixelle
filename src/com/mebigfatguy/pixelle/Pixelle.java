@@ -38,6 +38,7 @@ public class Pixelle {
 	 */
 	public static void main(String[] args) {
 		try {
+		    PixelleEvalFactory.loadSettings();
 			PixelleFrame pf = new PixelleFrame();
 			String title = MessageFormat.format(PixelleBundle.getString(PixelleBundle.TITLE), PixelleBundle.getString(PixelleBundle.UNTITLED));
 			pf.setTitle(title);

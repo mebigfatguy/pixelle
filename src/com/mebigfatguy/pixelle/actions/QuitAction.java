@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 
 import com.mebigfatguy.pixelle.FrameMgr;
 import com.mebigfatguy.pixelle.PixelleBundle;
+import com.mebigfatguy.pixelle.PixelleEvalFactory;
 
 public class QuitAction extends AbstractAction {
 	
@@ -44,6 +45,7 @@ public class QuitAction extends AbstractAction {
 			f.dispose();
 			FrameMgr.getInstance().remove(f);
 		}
+		PixelleEvalFactory.saveSettings();
 		System.exit(0);
 	}
 }

@@ -32,7 +32,7 @@ public enum IndexOutOfBoundsOption {
 	/** calculate a new index using the modulus function of the width or height */
 	WrapColor;
 	
-	private Color color = Color.WHITE;
+	private Color color = Color.white;
 
 	/**
 	 * retrieves the color that is used for when the enum is 'SpecifiedColor'

@@ -58,8 +58,10 @@ public class FrameMgr {
 	 */
 	public void remove(JFrame frame) {
 		frames.remove(frame);
-		if (frames.isEmpty())
+		if (frames.isEmpty()) {
+		    PixelleEvalFactory.saveSettings();
 			System.exit(0);
+		}
 	}
 	
 	/**
