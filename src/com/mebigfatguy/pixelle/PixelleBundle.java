@@ -18,6 +18,7 @@
  */
 package com.mebigfatguy.pixelle;
 
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
@@ -89,6 +90,7 @@ public class PixelleBundle {
 	public static final String WAVE_COLOR = "label.wave_color";
 	public static final String SAVE_OVERWRITE = "label.save_overwrite";
 	public static final String FAILED_TRANFORMATION = "label.failed_transformation";
+	public static final String PIXEL_EQUALS = "label.pixel.equals";
 	public static final String X = "label.x";
 	public static final String Y = "label.y";
 	public static final String COLOR = "label.color";
@@ -169,5 +171,9 @@ public class PixelleBundle {
 	 */
 	public static String getString(String key) {
 		return rb.getString(key);
+	}
+	
+	public static String getFormattedString(String key, Object... parms) {
+	    return MessageFormat.format(getString(key), parms); 
 	}
 }

@@ -76,7 +76,7 @@ public class PixelleExpressionDialog extends JDialog {
 	private final Map<PixelleComponent, JLabel> rgbLHS = new EnumMap<PixelleComponent, JLabel>(PixelleComponent.class);
 	{
 		for (PixelleComponent comp : PixelleComponent.rgbValues()) {
-			rgbLHS.put(comp, new JLabel(PixelleBundle.getString("formula." + comp.name().toLowerCase()) + " = "));
+			rgbLHS.put(comp, new JLabel(PixelleBundle.getFormattedString(PixelleBundle.PIXEL_EQUALS, PixelleBundle.getString("formula." + comp.name().toLowerCase()))));
 		}
 	}
 
