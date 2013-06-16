@@ -46,6 +46,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.mebigfatguy.pixelle.actions.ClipboardImportAction;
 import com.mebigfatguy.pixelle.actions.CloseFileAction;
 import com.mebigfatguy.pixelle.actions.InspectorAction;
 import com.mebigfatguy.pixelle.actions.NewFileAction;
@@ -71,6 +72,7 @@ public class PixelleFrame extends JFrame {
 	JMenu fileMenu;
 	JMenuItem newItem;
 	JMenuItem openItem;
+	JMenuItem clipboardItem;
 	JMenuItem closeItem;
 	JMenuItem saveItem;
 	JMenuItem saveAsItem;
@@ -131,6 +133,8 @@ public class PixelleFrame extends JFrame {
 		fileMenu.add(newItem);
 		openItem = new JMenuItem(new OpenFileAction(this));
 		fileMenu.add(openItem);
+		clipboardItem = new JMenuItem(new ClipboardImportAction(this));
+		fileMenu.add(clipboardItem);
 		fileMenu.addSeparator();
 		closeItem = new JMenuItem(new CloseFileAction(this));
 		fileMenu.add(closeItem);

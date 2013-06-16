@@ -34,6 +34,7 @@ public class PixelleBundle {
 	public static final String FILE_MENU = "menu.file.title";
 	public static final String NEW_ITEM = "menu.file.new";
 	public static final String OPEN_ITEM = "menu.file.open";
+	public static final String CLIPBOARD_IMPORT_ITEM = "menu.file.import";
 	public static final String CLOSE_ITEM = "menu.file.close";
 	public static final String SAVE_ITEM = "menu.file.save";
 	public static final String SAVEAS_ITEM = "menu.file.saveas";

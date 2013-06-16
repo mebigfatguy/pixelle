@@ -19,6 +19,7 @@
 package com.mebigfatguy.pixelle.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -36,7 +37,6 @@ public class ZoomAction extends AbstractAction {
 	
 	public ZoomAction(PixelleFrame pf, ZoomLevel level) {
 		super(PixelleBundle.getString(level.getKey()));
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('Z', ActionEvent.CTRL_MASK));
 		frame = pf;
 		zoom = level;
 	}
