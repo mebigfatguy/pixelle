@@ -44,6 +44,7 @@ import com.mebigfatguy.pixelle.utils.Closer;
  */
 public class PixelleEvalFactory {
 
+    public static final String PIXELLE = ".mebigfatguy/pixelle";
 	private static IndexOutOfBoundsOption ioobOption = IndexOutOfBoundsOption.BorderColor;
 	private static ColorOutOfBoundsOption coobOption = ColorOutOfBoundsOption.Clip;
 	
@@ -53,7 +54,7 @@ public class PixelleEvalFactory {
 	public static void loadSettings() {
 	    ObjectInputStream ois = null;
 	    try {
-	        File f = new File(new File(System.getProperty("user.home"), ".pixelle"), "pef.ser");
+	        File f = new File(new File(System.getProperty("user.home"), PIXELLE), "pef.ser");
 	        ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(f)));
 	        ioobOption = (IndexOutOfBoundsOption) ois.readObject();
 	        ioobOption.setColor((Color) ois.readObject());
@@ -67,7 +68,7 @@ public class PixelleEvalFactory {
 	public static void saveSettings() {
 	    ObjectOutputStream oos = null;
 	    try {
-    	    File f = new File(System.getProperty("user.home"), ".pixelle");
+    	    File f = new File(System.getProperty("user.home"), PIXELLE);
     	    f.mkdir();
     	    f = new File(f, "pef.ser");
     	    oos = new ObjectOutputStream( new BufferedOutputStream(new FileOutputStream(f)));
