@@ -59,7 +59,7 @@
 		<delete dir="${javadoc.dir}"/>
 		<delete dir="${jnlp.dir}"/>
 		<delete>
-    		<fileset dir="${basedir}" includes="*.zip"/>
+    		<fileset dir="${basedir}" includes="*.jar"/>
   		</delete>
   		<delete file="${src.dir}/com/mebigfatguy/pixelle/resources/version.properties"/>
 	</target>
@@ -181,7 +181,7 @@
 	</target>
 	
 	<target name="srczip" description="builds the source distribution zip file">
-		<zip destfile="${basedir}/pixelle-src-${pixelle.version}.zip" basedir="${basedir}">
+		<zip destfile="${basedir}/pixelle-${pixelle.version}-sources.jar" basedir="${basedir}">
 			<fileset dir="${basedir}">
 				<include name="**/*.java"/>
 				<include name="**/*.properties"/>
@@ -231,7 +231,7 @@
 	</target>
 	
 	<target name="binzip" depends="build" description="zips up all jars">
-		<zip destfile="${basedir}/pixelle-bin-${pixelle.version}.zip" 
+		<zip destfile="${basedir}/pixelle-${pixelle.version}-bin.jar" 
 			 basedir="${jnlp.dir}"
 			 includes="pixelle-${pixelle.version}.jar antlr-2.7.7.jar antlr-3.1b1.jar antlr-runtime-3.1b1.jar asm-3.1.jar stringtemplate-3.1.jar"/>
 	</target>
