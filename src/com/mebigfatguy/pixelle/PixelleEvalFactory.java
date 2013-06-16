@@ -18,6 +18,7 @@
  */
 package com.mebigfatguy.pixelle;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -55,6 +56,7 @@ public class PixelleEvalFactory {
 	        File f = new File(new File(System.getProperty("user.home"), ".pixelle"), "pef.ser");
 	        ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(f)));
 	        ioobOption = (IndexOutOfBoundsOption) ois.readObject();
+	        ioobOption.setColor((Color) ois.readObject());
 	        coobOption = (ColorOutOfBoundsOption) ois.readObject();
 	    } catch (Exception e) {  
 	    } finally {
@@ -70,6 +72,7 @@ public class PixelleEvalFactory {
     	    f = new File(f, "pef.ser");
     	    oos = new ObjectOutputStream( new BufferedOutputStream(new FileOutputStream(f)));
     	    oos.writeObject(ioobOption);
+    	    oos.writeObject(ioobOption.getColor());
     	    oos.writeObject(coobOption);
 	    } catch (Exception e) {   
 	    } finally {
