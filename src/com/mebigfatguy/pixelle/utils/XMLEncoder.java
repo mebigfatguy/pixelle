@@ -25,7 +25,6 @@ public final class XMLEncoder {
 	public static String xmlEncode(String input) {
 		input = input.replaceAll("&", "&amp;");
 		input = input.replaceAll("<", "&lt;");
-		input = input.replaceAll(">", "&gt;");
-		return input;
+		return input.replaceAll(">", "&gt;");
 	}
 }
