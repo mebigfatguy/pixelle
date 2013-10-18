@@ -171,6 +171,9 @@
 			<manifest>
 				<attribute name="pixelle-version" value="${pixelle.version}"/>
 				<attribute name="Main-Class" value="com.mebigfatguy.pixelle.Pixelle"/>
+                <attribute name="Application-Name" value="Pixelle" />
+                <attribute name="Permissions" value="all-permissions" />
+                <attribute name="Codebase" value="*" />
 				<attribute name="Bundle-ManifestVersion" value="2"/>
 				<attribute name="Bundle-Name" value="pixelle plugin"/>
 				<attribute name="Bundle-SymbolicName" value="com.mebigfatguy.pixelle"/>
