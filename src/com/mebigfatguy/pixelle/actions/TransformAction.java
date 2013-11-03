@@ -67,7 +67,7 @@ public class TransformAction extends AbstractAction {
 						location.x += 20;
 						location.y += 20;
 						f.setLocation(location);
-						f.setZoom(((PixelleFrame) frame).getZoom());
+						f.setZoom(frame.getZoom());
 						String title = MessageFormat.format(PixelleBundle.getString(PixelleBundle.TITLE), PixelleBundle.getString(PixelleBundle.UNTITLED));
 						f.setTitle(title);
 						f.setVisible(true);
