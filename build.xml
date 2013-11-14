@@ -19,9 +19,10 @@
  */
  -->
 
-<project name="pixelle" default="build">
+<project name="pixelle" default="info" xmlns:yank="antlib:com.mebigfatguy.yank">
 	
 	<property file="build.properties"/>
+	<property file="version.properties"/>
 	
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="classes.dir" value="${basedir}/classes"/>
@@ -37,21 +38,19 @@
 	<property name="javac.debug" value="on"/>
 	
 	<property name="pixelle.version" value="1.1.0"/>
-	
-	<property name="antlr.version" value="3.5"/>
-	<property name="antlr-runtime.version" value="3.5"/>
-	<property name="stringtemplate.version" value="4.0.2"/>
-	<property name="asm.version" value="4.1"/>
-	
-    <property name="antlr-url" value="http://repo1.maven.org/maven2/org/antlr/antlr/${antlr.version}/antlr-${antlr.version}.jar"/> 
-    <property name="antlr-runtime-url" value="http://repo1.maven.org/maven2/org/antlr/antlr-runtime/${antlr-runtime.version}/antlr-runtime-${antlr-runtime.version}.jar"/> 
-    <property name="stringtemplate-url" value="http://repo1.maven.org/maven2/org/antlr/stringtemplate/${stringtemplate.version}/stringtemplate-${stringtemplate.version}.jar"/> 
-    <property name="asm-url" value="http://repo1.maven.org/maven2/org/ow2/asm/asm/${asm.version}/asm-${asm.version}.jar"/> 
 
 	<path id="pixelle.classpath">
 		<pathelement location="${lib.dir}/antlr-runtime-${antlr-runtime.version}.jar"/>
 		<pathelement location="${lib.dir}/asm-${asm.version}.jar"/>
 	</path>
+	
+    <target name="info">
+        <echo message="Pixelle - an algorithmic graphics editor"/>
+        <echo message=""/>
+        <echo message="    this project uses yank (https://github.com/mebigfatguy/yank) for dependency management"/>
+        <echo message="    download yank.jar and place in ant/lib directory"/>
+        <echo message="    http://search.maven.org/#artifactdetails%7Ccom.mebigfatguy.yank%7Cyank%7C0.4.2%7Cjar"/>
+    </target>
 	
 	<target name="clean" description="removes all generated collateral">
 		<delete dir="${classes.dir}"/>
@@ -64,7 +63,15 @@
   		<delete file="${src.dir}/com/mebigfatguy/pixelle/resources/version.properties"/>
 	</target>
 	
-	<target name="-init" description="prepares repository for a build">
+    <target name="yank">
+        <mkdir dir="${lib.dir}"/>
+        <yank:yank yankFile="${basedir}/yank.xls" destination="${lib.dir}" source="true">
+            <server url="http://jcenter.bintray.com"/>
+            <generateVersions propertyFileName="${basedir}/version.properties" />
+        </yank:yank>
+    </target>
+	
+	<target name="-init" depends="yank" description="prepares repository for a build">
 		<mkdir dir="${classes.dir}"/>
 		<mkdir dir="${lib.dir}"/>
 		<mkdir dir="${antlr.gen.dir}"/>
