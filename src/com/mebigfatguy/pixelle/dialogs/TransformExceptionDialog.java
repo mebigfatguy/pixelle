@@ -18,6 +18,7 @@ import com.mebigfatguy.pixelle.PixelleTransformException;
 
 public class TransformExceptionDialog extends JDialog {
 
+    private static final long serialVersionUID = 258658421155830770L;
     private static final Border BORDER = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), 
                                             BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
             
