@@ -28,12 +28,16 @@
     </xsd:complexType>
     <xsd:complexType name="AlgorithmClass">
         <xsd:sequence>
-            <xsd:element maxOccurs="5" minOccurs="5" name="component" type="ComponentClass"/>
+            <xsd:element maxOccurs="5" minOccurs="2" name="component" type="ComponentClass"/>
         </xsd:sequence>
         <xsd:attribute name="name" type="xsd:string" use="required"/>
     </xsd:complexType>
     <xsd:complexType name="ComponentClass">
-        <xsd:attribute name="name" type="NameClass" use="required"/>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="name" type="NameClass" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
     </xsd:complexType>
     <xsd:simpleType name="NameClass">
         <xsd:restriction base="xsd:string">
