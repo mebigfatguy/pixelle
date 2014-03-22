@@ -21,6 +21,8 @@ package com.mebigfatguy.pixelle;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -35,17 +37,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.SchemaFactory;
 
 import com.mebigfatguy.pixelle.utils.Closer;
 import com.mebigfatguy.pixelle.utils.XMLEncoder;
@@ -63,8 +69,30 @@ public class AlgorithmArchiver {
 	public static final String PIXELLE = ".mebigfatguy/pixelle";
 	public static final String ALGORITHMS_FILE = "algorithms.xml";
 
+    private static final InputStream XSD_STREAM;
 
-	private static AlgorithmArchiver archiver = new AlgorithmArchiver();
+	static {
+	    InputStream is = null;
+	    ByteArrayOutputStream baos = null;
+	    try {
+	        is = AlgorithmArchiver.class.getResourceAsStream(SYSTEM_ALGO_XSD_PATH);
+	        if (is != null) {
+	            baos = new ByteArrayOutputStream();
+	            byte[] data = new byte[1024];
+	            int len = is.read(data);
+	            while (len >= 0) {
+	                baos.write(data, 0, len);
+	                len = is.read(data);
+	            }
+	        }
+	    } catch (IOException e) {
+	        //ignore
+	    } finally {
+	        XSD_STREAM = (is != null) ? new ByteArrayInputStream(baos.toByteArray()) : null;
+	        Closer.close(is);	    }
+	}
+	
+    private static AlgorithmArchiver ARCHIVER = new AlgorithmArchiver();
 
 	private final Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> systemAlgorithms;
 	private final Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> userAlgorithms;
@@ -77,7 +105,7 @@ public class AlgorithmArchiver {
 	}
 
 	public static AlgorithmArchiver getArchiver() {
-		return archiver;
+		return ARCHIVER;
 	}
 
 	public JPopupMenu getAlgorithmDisplayPopup(ImageType imageType, ActionListener l) {
@@ -203,23 +231,24 @@ public class AlgorithmArchiver {
 			e.printStackTrace();
 		} finally {
 			Closer.close(xmlIs);
+
 		}
 	}
 
 	private void loadUserAlgorithms() {
-		InputStream is = null;
+		InputStream xmlIs = null;
 		try {
 			File pixelleDir = new File(System.getProperty("user.home"), PIXELLE);
 			pixelleDir.mkdirs();
 			File algoFile = new File(pixelleDir, ALGORITHMS_FILE);
 			if (algoFile.exists() && algoFile.isFile()) {
-				is = new BufferedInputStream(new FileInputStream(algoFile));
-				parseAlgorithms(is, userAlgorithms);
+				xmlIs = new BufferedInputStream(new FileInputStream(algoFile));
+				parseAlgorithms(xmlIs, userAlgorithms);
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		} finally {
-			Closer.close(is);
+			Closer.close(xmlIs);
 		}
 
 	}
@@ -259,55 +288,65 @@ public class AlgorithmArchiver {
 		}
 	}
 
-	private void parseAlgorithms(InputStream is, final Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> algorithms) throws IOException, SAXException {
-		XMLReader r = XMLReaderFactory.createXMLReader();
-		r.setContentHandler(new DefaultHandler() {
-			Map<String, Map<String, Map<PixelleComponent, String>>> currentType = null;
-			Map<String, Map<PixelleComponent, String>> currentGroup = null;
-			Map<PixelleComponent, String> currentAlgorithm = null;
-			String currentComponentName = null;
-			StringBuilder algorithmText = null;
-
-			@Override
-			public void startElement(String uri, String localName, String qName, Attributes atts) {
-				if (TYPE.equals(localName)) {
-					currentType = new HashMap<String, Map<String, Map<PixelleComponent, String>>>();
-					algorithms.put(ImageType.valueOf(atts.getValue(NAME)), currentType);
-				} else if (GROUP.equals(localName)) {
-					currentGroup = new HashMap<String, Map<PixelleComponent, String>>();
-					currentType.put(atts.getValue(NAME), currentGroup);
-				} else if (ALGORITHM.equals(localName)) {
-					currentAlgorithm = new EnumMap<PixelleComponent, String>(PixelleComponent.class);
-					currentGroup.put(atts.getValue(NAME), currentAlgorithm);
-				} else if (COMPONENT.equals(localName)) {
-					currentComponentName = atts.getValue(NAME);
-					algorithmText = new StringBuilder();
-				}
-			}
-
-			@Override
-			public void characters(char[] c, int start, int offset) {
-				if (currentComponentName != null) {
-					algorithmText.append(c, start, offset);
-				}
-			}
-
-			@Override
-			public void endElement(String uri, String localName, String qName) {
-				if (COMPONENT.equals(localName)) {
-					PixelleComponent pc = PixelleComponent.valueOf(currentComponentName.toUpperCase());
-					currentAlgorithm.put(pc, algorithmText.toString().trim());
-					algorithmText = null;
-					currentComponentName = null;
-				} else if (ALGORITHM.equals(localName)) {
-					currentAlgorithm = null;
-				} else if (GROUP.equals(localName)) {
-					currentGroup = null;
-				} else if (TYPE.equals(localName)) {
-					currentType = null;
-				}
-			}
-		});
-		r.parse(new InputSource(is));
+	private void parseAlgorithms(InputStream xmlIs, final Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> algorithms) throws IOException, SAXException {
+	    try {
+    	    SAXParserFactory spf = SAXParserFactory.newInstance();
+    	    if (XSD_STREAM != null) {
+        	    spf.setValidating(true);
+                SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        	    spf.setSchema(schemaFactory.newSchema(new StreamSource(XSD_STREAM)));
+    	    }
+    	    XMLReader r = XMLReaderFactory.createXMLReader();
+    		r.setContentHandler(new DefaultHandler() {
+    			Map<String, Map<String, Map<PixelleComponent, String>>> currentType = null;
+    			Map<String, Map<PixelleComponent, String>> currentGroup = null;
+    			Map<PixelleComponent, String> currentAlgorithm = null;
+    			String currentComponentName = null;
+    			StringBuilder algorithmText = null;
+    
+    			@Override
+    			public void startElement(String uri, String localName, String qName, Attributes atts) {
+    				if (TYPE.equals(localName)) {
+    					currentType = new HashMap<String, Map<String, Map<PixelleComponent, String>>>();
+    					algorithms.put(ImageType.valueOf(atts.getValue(NAME)), currentType);
+    				} else if (GROUP.equals(localName)) {
+    					currentGroup = new HashMap<String, Map<PixelleComponent, String>>();
+    					currentType.put(atts.getValue(NAME), currentGroup);
+    				} else if (ALGORITHM.equals(localName)) {
+    					currentAlgorithm = new EnumMap<PixelleComponent, String>(PixelleComponent.class);
+    					currentGroup.put(atts.getValue(NAME), currentAlgorithm);
+    				} else if (COMPONENT.equals(localName)) {
+    					currentComponentName = atts.getValue(NAME);
+    					algorithmText = new StringBuilder();
+    				}
+    			}
+    
+    			@Override
+    			public void characters(char[] c, int start, int offset) {
+    				if (currentComponentName != null) {
+    					algorithmText.append(c, start, offset);
+    				}
+    			}
+    
+    			@Override
+    			public void endElement(String uri, String localName, String qName) {
+    				if (COMPONENT.equals(localName)) {
+    					PixelleComponent pc = PixelleComponent.valueOf(currentComponentName.toUpperCase());
+    					currentAlgorithm.put(pc, algorithmText.toString().trim());
+    					algorithmText = null;
+    					currentComponentName = null;
+    				} else if (ALGORITHM.equals(localName)) {
+    					currentAlgorithm = null;
+    				} else if (GROUP.equals(localName)) {
+    					currentGroup = null;
+    				} else if (TYPE.equals(localName)) {
+    					currentType = null;
+    				}
+    			}
+    		});
+    		r.parse(new InputSource(xmlIs));
+	    } finally {
+	        XSD_STREAM.reset();
+	    }
 	}
 }
