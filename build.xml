@@ -32,8 +32,8 @@
 	<property name="jnlp.dir" value="${htdocs.dir}/jnlp"/>
 	<property name="javadoc.dir" value="${htdocs.dir}/javadoc"/>
 	<property name="antlr.gen.dir" value="${src.dir}/com/mebigfatguy/pixelle/antlr"/>
-	<property name="javac.source" value="1.5"/>
-	<property name="javac.target" value="1.5"/>
+	<property name="javac.source" value="1.7"/>
+	<property name="javac.target" value="1.7"/>
 	<property name="javac.deprecation" value="on"/>
 	<property name="javac.debug" value="on"/>
 	

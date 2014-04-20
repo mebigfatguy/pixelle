@@ -36,10 +36,10 @@ import com.mebigfatguy.pixelle.antlr.PixelleLexer;
 import com.mebigfatguy.pixelle.antlr.PixelleParser;
 import com.mebigfatguy.pixelle.eval.PixelleEval4ByteABGR;
 import com.mebigfatguy.pixelle.eval.PixelleEvalByteGray;
-import com.mebigfatguy.pixelle.utils.Closer;
 
 /**
- * transforms one bitmap into another based on the algorithms defined by the user.
+ * transforms one bitmap into another based on the algorithms defined by the
+ * user.
  */
 public class PixelleTransformer {
 
@@ -50,11 +50,17 @@ public class PixelleTransformer {
 
 	/**
 	 * constructions a transformer given a source bitmap and algorithms
-	 * @param images the source images
-	 * @param algos the algorithms for the color components
-	 * @param newDimension the desired dimension of the output image
+	 * 
+	 * @param images
+	 *            the source images
+	 * @param algos
+	 *            the algorithms for the color components
+	 * @param newDimension
+	 *            the desired dimension of the output image
 	 */
-	public PixelleTransformer(PixelleImage[] images, Map<PixelleComponent, String> algos, ImageType imageType, Point newDimension) {
+	public PixelleTransformer(PixelleImage[] images,
+			Map<PixelleComponent, String> algos, ImageType imageType,
+			Point newDimension) {
 		srcImages = images;
 		algorithms = algos;
 		outputImageType = imageType;
@@ -67,22 +73,27 @@ public class PixelleTransformer {
 	 * @return a set of transformation algorithms
 	 */
 	public static Map<PixelleComponent, String> getSampleTransform() {
-		Map<PixelleComponent, String> algorithms = new EnumMap<PixelleComponent, String>(PixelleComponent.class);
+		Map<PixelleComponent, String> algorithms = new EnumMap<PixelleComponent, String>(
+				PixelleComponent.class);
 		algorithms.put(PixelleComponent.RED, "x");
 		algorithms.put(PixelleComponent.GREEN, "y");
 		algorithms.put(PixelleComponent.BLUE, "abs((width/2) - x)");
-		algorithms.put(PixelleComponent.TRANSPARENCY, "((x < 10) || (x >= (width - 10)) || (y < 10) || (y >= (height - 10))) ? 180 : 255");
+		algorithms
+				.put(PixelleComponent.TRANSPARENCY,
+						"((x < 10) || (x >= (width - 10)) || (y < 10) || (y >= (height - 10))) ? 180 : 255");
 		algorithms.put(PixelleComponent.SELECTION, "0");
 		return algorithms;
 	}
+
 	/**
-	 * transforms the image into a destination image based on the algorithms supplied.
-	 * It does this by generating classes that implement the PixelleExpr interface, and
-	 * dynamically loads them to create the new pixel values.
+	 * transforms the image into a destination image based on the algorithms
+	 * supplied. It does this by generating classes that implement the
+	 * PixelleExpr interface, and dynamically loads them to create the new pixel
+	 * values.
 	 * 
 	 * @return the destination bitmap
-	 * @throws PixelleTransformException if a failure occurs reading, writing or transforming
-	 * a bitmap
+	 * @throws PixelleTransformException
+	 *             if a failure occurs reading, writing or transforming a bitmap
 	 */
 	public PixelleImage transform() throws PixelleTransformException {
 
@@ -94,11 +105,17 @@ public class PixelleTransformer {
 			PixelleEval destPE;
 
 			if (outputImageType == ImageType.RGB) {
-				destImage = new PixelleImage(new BufferedImage(dimension.x, dimension.y, BufferedImage.TYPE_4BYTE_ABGR));
-				destPE = new PixelleEval4ByteABGR(destImage, PixelleEvalFactory.getIndexOutOfBoundsOption(), PixelleEvalFactory.getColorOutOfBoundsOption());
+				destImage = new PixelleImage(new BufferedImage(dimension.x,
+						dimension.y, BufferedImage.TYPE_4BYTE_ABGR));
+				destPE = new PixelleEval4ByteABGR(destImage,
+						PixelleEvalFactory.getIndexOutOfBoundsOption(),
+						PixelleEvalFactory.getColorOutOfBoundsOption());
 			} else {
-				destImage = new PixelleImage(new BufferedImage(dimension.x, dimension.y, BufferedImage.TYPE_BYTE_GRAY));
-				destPE = new PixelleEvalByteGray(destImage, PixelleEvalFactory.getIndexOutOfBoundsOption(), PixelleEvalFactory.getColorOutOfBoundsOption());
+				destImage = new PixelleImage(new BufferedImage(dimension.x,
+						dimension.y, BufferedImage.TYPE_BYTE_GRAY));
+				destPE = new PixelleEvalByteGray(destImage,
+						PixelleEvalFactory.getIndexOutOfBoundsOption(),
+						PixelleEvalFactory.getColorOutOfBoundsOption());
 			}
 
 			PixelleEval[] sourceEvals = new PixelleEval[srcImages.length];
@@ -107,32 +124,37 @@ public class PixelleTransformer {
 				sourceEvals[i] = srcPE;
 			}
 
-			PixelleClassLoader pcl = AccessController.doPrivileged(new PrivilegedAction<PixelleClassLoader>() {
-				public PixelleClassLoader run() {
-					return new PixelleClassLoader(Thread.currentThread().getContextClassLoader());
-				}
-			});
+			PixelleClassLoader pcl = AccessController
+					.doPrivileged(new PrivilegedAction<PixelleClassLoader>() {
+						public PixelleClassLoader run() {
+							return new PixelleClassLoader(Thread
+									.currentThread().getContextClassLoader());
+						}
+					});
 
-			for (Map.Entry<PixelleComponent, String> entry : algorithms.entrySet()) {
+			for (Map.Entry<PixelleComponent, String> entry : algorithms
+					.entrySet()) {
 				currentComponent = entry.getKey().name();
 				currentAlgorithm = entry.getValue();
 
-				CharStream cs = new ANTLRCaseInsensitiveStringStream(currentAlgorithm);
+				CharStream cs = new ANTLRCaseInsensitiveStringStream(
+						currentAlgorithm);
 				PixelleLexer pl = new PixelleLexer(cs);
 				CommonTokenStream tokens = new CommonTokenStream();
 				tokens.setTokenSource(pl);
 
-
-				String clsName = "com.mebigfatguy.pixelle.asm.PixelleExpr" + currentComponent;
+				String clsName = "com.mebigfatguy.pixelle.asm.PixelleExpr"
+						+ currentComponent;
 				PixelleParser pp = new PixelleParser(tokens, clsName);
 				pp.pixelle();
 
 				byte[] bytes = pp.getClassBytes();
-				//dump(bytes, clsName.substring(clsName.lastIndexOf('.') + 1) + ".class");
+				// dump(bytes, clsName.substring(clsName.lastIndexOf('.') + 1) +
+				// ".class");
 
 				pcl.addClass(clsName, bytes);
 				Class<?> cl = pcl.loadClass(clsName);
-				PixelleExpr expr = (PixelleExpr)cl.newInstance();
+				PixelleExpr expr = (PixelleExpr) cl.newInstance();
 
 				int width = destImage.getWidth();
 				int height = destImage.getHeight();
@@ -151,53 +173,45 @@ public class PixelleTransformer {
 
 			return destImage;
 		} catch (RecognitionException re) {
-		    throw new PixelleTransformException(currentComponent, currentAlgorithm, re.charPositionInLine, re);
+			throw new PixelleTransformException(currentComponent,
+					currentAlgorithm, re.charPositionInLine, re);
 		} catch (Exception e) {
-			throw new PixelleTransformException(currentComponent, currentAlgorithm, -1, e);
+			throw new PixelleTransformException(currentComponent,
+					currentAlgorithm, -1, e);
 		}
 	}
 
 	/** for debugging */
-	private static void dump(byte[] byteCode, String name)
-	{
-		FileOutputStream fos = null;
-		try
-		{
-			File clsFile = new File(System.getProperty("java.io.tmpdir"), name);
-			fos = new FileOutputStream(clsFile);
+	private static void dump(byte[] byteCode, String name) {
+		File clsFile = new File(System.getProperty("java.io.tmpdir"), name);
+		try (FileOutputStream fos = new FileOutputStream(clsFile)) {
+
 			fos.write(byteCode);
 			fos.flush();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		finally
-		{
-		    Closer.close(fos);
-		}
 	}
-	
-	class ANTLRCaseInsensitiveStringStream extends ANTLRStringStream
-	{
-	    public ANTLRCaseInsensitiveStringStream(String text) {
-	        super(text);
-	    }
-	    
-	    public int LA(int i) {
-	        if ( i==0 ) {
-	            return 0;
-	        }
-	        if ( i<0 ) {
-	            i++;
-	        }
-	 
-	        if ( (p+i-1) >= n ) {
-	 
-	            return CharStream.EOF;
-	        }
-	        return Character.toUpperCase(data[p+i-1]);
-	    }
+
+	class ANTLRCaseInsensitiveStringStream extends ANTLRStringStream {
+		public ANTLRCaseInsensitiveStringStream(String text) {
+			super(text);
+		}
+
+		public int LA(int i) {
+			if (i == 0) {
+				return 0;
+			}
+			if (i < 0) {
+				i++;
+			}
+
+			if ((p + i - 1) >= n) {
+
+				return CharStream.EOF;
+			}
+			return Character.toUpperCase(data[p + i - 1]);
+		}
 	}
 
 }

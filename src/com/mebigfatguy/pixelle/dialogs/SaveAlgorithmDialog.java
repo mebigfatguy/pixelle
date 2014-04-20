@@ -52,7 +52,7 @@ public class SaveAlgorithmDialog extends JDialog {
 	};
 	
 	private final ImageType imageType;
-	private JComboBox groupBox;
+	private JComboBox<String> groupBox;
 	private JTextField nameField;
 	private JButton ok;
 	private JButton cancel;
@@ -83,7 +83,7 @@ public class SaveAlgorithmDialog extends JDialog {
 		cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
 		
 		String[] groups = AlgorithmArchiver.getArchiver().getUserGroups(imageType);
-		groupBox = new JComboBox(new DefaultComboBoxModel(groups));
+		groupBox = new JComboBox<>(new DefaultComboBoxModel<String>(groups));
 		groupBox.setEditable(true);
 		nameField = new JTextField(10);
 		GuiUtils.sizeUniformly(GuiUtils.Sizing.Both, labels);

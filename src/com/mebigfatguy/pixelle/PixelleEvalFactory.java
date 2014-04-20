@@ -36,7 +36,6 @@ import com.mebigfatguy.pixelle.eval.PixelleEvalIndexed;
 import com.mebigfatguy.pixelle.eval.PixelleEvalIntARGB;
 import com.mebigfatguy.pixelle.eval.PixelleEvalIntBGR;
 import com.mebigfatguy.pixelle.eval.PixelleEvalIntRGB;
-import com.mebigfatguy.pixelle.utils.Closer;
 
 /**
  * factory for creating pixel evaluation instances based on the type of image that is
@@ -52,32 +51,25 @@ public class PixelleEvalFactory {
 	}
 	
 	public static void loadSettings() {
-	    ObjectInputStream ois = null;
-	    try {
-	        File f = new File(new File(System.getProperty("user.home"), PIXELLE), "pef.ser");
-	        ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(f)));
+        File f = new File(new File(System.getProperty("user.home"), PIXELLE), "pef.ser");
+	    try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(f)))) {
 	        ioobOption = (IndexOutOfBoundsOption) ois.readObject();
 	        ioobOption.setColor((Color) ois.readObject());
 	        coobOption = (ColorOutOfBoundsOption) ois.readObject();
 	    } catch (Exception e) {  
-	    } finally {
-	        Closer.close(ois);
 	    }
 	}
 	
 	public static void saveSettings() {
-	    ObjectOutputStream oos = null;
-	    try {
-    	    File f = new File(System.getProperty("user.home"), PIXELLE);
-    	    f.mkdir();
-    	    f = new File(f, "pef.ser");
-    	    oos = new ObjectOutputStream( new BufferedOutputStream(new FileOutputStream(f)));
+	    File f = new File(System.getProperty("user.home"), PIXELLE);
+	    f.mkdir();
+	    f = new File(f, "pef.ser");
+	    try (ObjectOutputStream oos = new ObjectOutputStream( new BufferedOutputStream(new FileOutputStream(f)))){
+
     	    oos.writeObject(ioobOption);
     	    oos.writeObject(ioobOption.getColor());
     	    oos.writeObject(coobOption);
 	    } catch (Exception e) {   
-	    } finally {
-	        Closer.close(oos);
 	    }
 	}
 	

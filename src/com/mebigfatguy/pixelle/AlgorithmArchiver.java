@@ -37,13 +37,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -53,7 +46,13 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
 
-import com.mebigfatguy.pixelle.utils.Closer;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.XMLReaderFactory;
+
 import com.mebigfatguy.pixelle.utils.XMLEncoder;
 
 public class AlgorithmArchiver {
@@ -69,13 +68,11 @@ public class AlgorithmArchiver {
 	public static final String PIXELLE = ".mebigfatguy/pixelle";
 	public static final String ALGORITHMS_FILE = "algorithms.xml";
 
-    private static final InputStream XSD_STREAM;
+    private static InputStream XSD_STREAM;
 
 	static {
-	    InputStream is = null;
 	    ByteArrayOutputStream baos = null;
-	    try {
-	        is = AlgorithmArchiver.class.getResourceAsStream(SYSTEM_ALGO_XSD_PATH);
+	    try (InputStream is = AlgorithmArchiver.class.getResourceAsStream(SYSTEM_ALGO_XSD_PATH)) {
 	        if (is != null) {
 	            baos = new ByteArrayOutputStream();
 	            byte[] data = new byte[1024];
@@ -84,12 +81,11 @@ public class AlgorithmArchiver {
 	                baos.write(data, 0, len);
 	                len = is.read(data);
 	            }
+	            XSD_STREAM = new ByteArrayInputStream(baos.toByteArray());  
 	        }
 	    } catch (IOException e) {
 	        //ignore
-	    } finally {
-	        XSD_STREAM = (is != null) ? new ByteArrayInputStream(baos.toByteArray()) : null;
-	        Closer.close(is);	    }
+	    }
 	}
 	
     private static AlgorithmArchiver ARCHIVER = new AlgorithmArchiver();
@@ -207,56 +203,46 @@ public class AlgorithmArchiver {
 	}
 
 	public void save() {
-		OutputStream xmlOut = null;
-		try {
-			File pixelleDir = new File(System.getProperty("user.home"), PIXELLE);
-			pixelleDir.mkdirs();
-			File algoFile = new File(pixelleDir, ALGORITHMS_FILE);
-			xmlOut = new BufferedOutputStream(new FileOutputStream(algoFile));
+		File pixelleDir = new File(System.getProperty("user.home"), PIXELLE);
+		pixelleDir.mkdirs();
+		File algoFile = new File(pixelleDir, ALGORITHMS_FILE);
+		
+		try (OutputStream xmlOut = new BufferedOutputStream(new FileOutputStream(algoFile))){
 			writeAlgorithms(xmlOut, userAlgorithms);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			Closer.close(xmlOut);
 		}
 
 	}
 
 	private void loadSystemAlgorithms() {
-		InputStream xmlIs = null;
-		try {
-			xmlIs = AlgorithmArchiver.class.getResourceAsStream(SYSTEM_ALGO_XML_PATH);
+		try (InputStream xmlIs = AlgorithmArchiver.class.getResourceAsStream(SYSTEM_ALGO_XML_PATH)){
+			
 			parseAlgorithms(xmlIs, systemAlgorithms);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			Closer.close(xmlIs);
-
 		}
 	}
 
 	private void loadUserAlgorithms() {
-		InputStream xmlIs = null;
-		try {
-			File pixelleDir = new File(System.getProperty("user.home"), PIXELLE);
-			pixelleDir.mkdirs();
-			File algoFile = new File(pixelleDir, ALGORITHMS_FILE);
-			if (algoFile.exists() && algoFile.isFile()) {
-				xmlIs = new BufferedInputStream(new FileInputStream(algoFile));
+		File pixelleDir = new File(System.getProperty("user.home"), PIXELLE);
+		pixelleDir.mkdirs();
+		File algoFile = new File(pixelleDir, ALGORITHMS_FILE);
+		if (algoFile.exists() && algoFile.isFile()) {
+			
+			try (InputStream xmlIs = new BufferedInputStream(new FileInputStream(algoFile))){
+
 				parseAlgorithms(xmlIs, userAlgorithms);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		} finally {
-			Closer.close(xmlIs);
 		}
 
 	}
 
 	private void writeAlgorithms(OutputStream is, Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> algorithms) {
-		PrintWriter pw = null;
-		try {
-			pw = new PrintWriter(new OutputStreamWriter(is));
+		try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(is))){
+			
 			pw.println("<algorithms xmlns='http://pixelle.mebigfatguy.com/" + Version.getVersion() + "'");
 			pw.println("            xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'");
 			pw.println("            xsi:schemaLocation='/com/mebigfatguy/pixelle/resources/algorithms.xsd'>");
@@ -282,9 +268,6 @@ public class AlgorithmArchiver {
 			}
 			pw.println("</algorithms>");
 			pw.flush();
-		}
-		finally {
-			Closer.close(pw);
 		}
 	}
 
