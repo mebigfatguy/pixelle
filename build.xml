@@ -25,12 +25,13 @@
 	<property file="version.properties"/>
 	
 	<property name="src.dir" value="${basedir}/src"/>
-	<property name="classes.dir" value="${basedir}/classes"/>
+	<property name="target.dir" value="${basedir}/target"/>
+	<property name="classes.dir" value="${target.dir}/classes"/>
 	<property name="lib.dir" value="${basedir}/lib"/>
 	<property name="etc.dir" value="${basedir}/etc"/>
 	<property name="htdocs.dir" value="${basedir}/htdocs"/>
 	<property name="jnlp.dir" value="${htdocs.dir}/jnlp"/>
-	<property name="javadoc.dir" value="${htdocs.dir}/javadoc"/>
+	<property name="javadoc.dir" value="${target.dir}/javadoc"/>
 	<property name="antlr.gen.dir" value="${src.dir}/com/mebigfatguy/pixelle/antlr"/>
 	<property name="javac.source" value="1.7"/>
 	<property name="javac.target" value="1.7"/>
@@ -53,13 +54,9 @@
     </target>
 	
 	<target name="clean" description="removes all generated collateral">
-		<delete dir="${classes.dir}"/>
+		<delete dir="${target.dir}"/>
 		<delete dir="${antlr.gen.dir}"/>
-		<delete dir="${javadoc.dir}"/>
 		<delete dir="${jnlp.dir}"/>
-		<delete>
-    		<fileset dir="${basedir}" includes="*.jar"/>
-  		</delete>
   		<delete file="${src.dir}/com/mebigfatguy/pixelle/resources/version.properties"/>
 	</target>
 	
@@ -130,7 +127,7 @@
 	</target>
 	
 	<target name="jar" depends="compile,resources" description="produces the pixelle jar file">
-		<jar destfile="${basedir}/pixelle-${pixelle.version}.jar">
+		<jar destfile="${target.dir}/pixelle-${pixelle.version}.jar">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class"/>
 				<include name="**/*.properties"/>
@@ -157,7 +154,7 @@
 	</target>
 	
 	<target name="srczip" description="builds the source distribution zip file">
-		<zip destfile="${basedir}/pixelle-${pixelle.version}-sources.jar" basedir="${basedir}">
+		<zip destfile="${target.dir}/pixelle-${pixelle.version}-sources.jar" basedir="${basedir}">
 			<fileset dir="${basedir}">
 				<include name="**/*.java"/>
 				<include name="**/*.properties"/>
@@ -178,7 +175,7 @@
 				 destdir="${javadoc.dir}"
 				 windowtitle="pixelle api">
 		    <doctitle><![CDATA[<h1>pixelle javadoc</h1>]]></doctitle>
-		    <bottom><![CDATA[<i>Copyright &#169; 2008-2012 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
+		    <bottom><![CDATA[<i>Copyright &#169; 2008-2014 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
 		</javadoc>
 	</target>
 	
@@ -187,7 +184,7 @@
 			<fileset dir="${lib.dir}">
 				<include name="*.jar"/>
 			</fileset>
-			<fileset dir="${basedir}">
+			<fileset dir="${target.dir}">
 				<include name="*.jar"/>
 			</fileset>
 		</copy>
@@ -207,7 +204,7 @@
 	</target>
 	
 	<target name="binzip" depends="build" description="zips up all jars">
-		<zip destfile="${basedir}/pixelle-${pixelle.version}-bin.jar" 
+		<zip destfile="${target.dir}/pixelle-${pixelle.version}-bin.jar" 
 			 basedir="${jnlp.dir}"
 			 includes="pixelle-${pixelle.version}.jar antlr-2.7.7.jar antlr-3.1b1.jar antlr-runtime-3.1b1.jar asm-3.1.jar stringtemplate-3.1.jar"/>
 	</target>
