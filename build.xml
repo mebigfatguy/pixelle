@@ -80,42 +80,8 @@
 		<mkdir dir="${jnlp.dir}"/>
 		<echo message="pixelle.version = ${pixelle.version}" file="${src.dir}/com/mebigfatguy/pixelle/resources/version.properties"/>
 	</target>
-	
-	<target name="antlr-check">
-        <available file="${basedir}/lib/antlr-${antlr.version}.jar" property="antlr-exists"/>
-    </target>
 
-	<target name="antlr-runtime-check">
-        <available file="${basedir}/lib/antlr-runtime-${antlr-runtime.version}.jar" property="antlr-runtime-exists"/>
-    </target>
-
-	<target name="stringtemplate-check">
-        <available file="${basedir}/lib/stringtemplate-${stringtemplate.version}.jar" property="stringtemplate-exists"/>
-    </target>
-
-	<target name="asm-check">
-        <available file="${basedir}/lib/asm-${asm.version}.jar" property="asm-exists"/>
-    </target>
-
-	<target name="install-antlr" depends="antlr-check" unless="antlr-exists" description="installs antlr.jar into lib">
-        <get src="${antlr-url}" dest="${basedir}/lib/antlr-${antlr.version}.jar" verbose="true" ignoreerrors="true"/>
-    </target>
-	
-    <target name="install-antlr-runtime" depends="antlr-runtime-check" unless="antlr-runtime-exists" description="installs antlr-runtime.jar into lib">
-        <get src="${antlr-runtime-url}" dest="${basedir}/lib/antlr-runtime-${antlr-runtime.version}.jar" verbose="true" ignoreerrors="true"/>
-    </target>
-
-    <target name="install-stringtemplate" depends="stringtemplate-check" unless="stringtemplate-exists" description="installs stringtemplate.jar into lib">
-        <get src="${stringtemplate-url}" dest="${basedir}/lib/stringtemplate-${stringtemplate.version}.jar" verbose="true" ignoreerrors="true"/>
-    </target>
-
-    <target name="install-asm" depends="asm-check" unless="asm-exists" description="installs asm.jar into lib">
-        <get src="${asm-url}" dest="${basedir}/lib/asm-${asm.version}.jar" verbose="true" ignoreerrors="true"/>
-    </target>
-
-	<target name="pull" depends="install-antlr, install-antlr-runtime, install-stringtemplate, install-asm" description="pull 3rdparty jars to the lib directory"/>
-
-	<target name="-gen" depends="pull" description="generate antlr files">
+	<target name="-gen" depends="-init" description="generate antlr files">
 		<exec executable="java" failonerror="true">
 		    <arg value="-classpath"/>
 		    <arg value="${lib.dir}/antlr-${antlr.version}.jar:${lib.dir}/antlr-runtime-${antlr-runtime.version}.jar:${lib.dir}/stringtemplate-${stringtemplate.version}.jar"/>
