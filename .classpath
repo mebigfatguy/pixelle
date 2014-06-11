@@ -6,5 +6,5 @@
 	<classpathentry kind="lib" path="lib/antlr-3.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-runtime-3.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/asm-5.0.3.jar" sourcepath="lib/asm-5.0.3-sources.jar"/>
-	<classpathentry kind="output" path="classes"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
