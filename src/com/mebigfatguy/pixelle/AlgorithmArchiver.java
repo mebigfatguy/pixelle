@@ -273,8 +273,8 @@ public class AlgorithmArchiver {
 
 	private void parseAlgorithms(InputStream xmlIs, final Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> algorithms) throws IOException, SAXException {
 	    try {
-    	    SAXParserFactory spf = SAXParserFactory.newInstance();
     	    if (XSD_STREAM != null) {
+        	    SAXParserFactory spf = SAXParserFactory.newInstance();
         	    spf.setValidating(true);
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         	    spf.setSchema(schemaFactory.newSchema(new StreamSource(XSD_STREAM)));
