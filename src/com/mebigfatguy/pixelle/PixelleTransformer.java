@@ -193,7 +193,7 @@ public class PixelleTransformer {
 		}
 	}
 
-	class ANTLRCaseInsensitiveStringStream extends ANTLRStringStream {
+	static class ANTLRCaseInsensitiveStringStream extends ANTLRStringStream {
 		public ANTLRCaseInsensitiveStringStream(String text) {
 			super(text);
 		}
