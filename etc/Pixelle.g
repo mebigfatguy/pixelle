@@ -48,11 +48,11 @@ package com.mebigfatguy.pixelle.antlr;
 		
 		mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, new String[0]);
 		mv.visitVarInsn(Opcodes.ALOAD, 0);
-		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
+		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
 		mv.visitVarInsn(Opcodes.ALOAD, 0);
 		mv.visitTypeInsn(Opcodes.NEW, "java/util/ArrayList");
         mv.visitInsn(Opcodes.DUP);
-        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/util/ArrayList", "<init>", "()V");
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/util/ArrayList", "<init>", "()V", false);
         mv.visitFieldInsn(Opcodes.PUTFIELD, clz, "stack", "Ljava/util/List;"); 
 		mv.visitInsn(Opcodes.RETURN);
 		mv.visitMaxs(0,0);
@@ -70,15 +70,15 @@ package com.mebigfatguy.pixelle.antlr;
 		mv = cw.visitMethod(Opcodes.ACC_PRIVATE, "pixelAverage", "(DDDCLcom/mebigfatguy/pixelle/PixelleEval;)D", null, new String[0]);
         
 		mv.visitVarInsn(Opcodes.DLOAD, 1);
-		mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J");
+		mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J", false);
 		mv.visitInsn(Opcodes.L2I);
 		mv.visitVarInsn(Opcodes.ISTORE, 9);
         mv.visitVarInsn(Opcodes.DLOAD, 3);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J");
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J", false);
         mv.visitInsn(Opcodes.L2I);
         mv.visitVarInsn(Opcodes.ISTORE, 10);
         mv.visitVarInsn(Opcodes.DLOAD, 5);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J");
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J", false);
         mv.visitInsn(Opcodes.L2I);
         mv.visitVarInsn(Opcodes.ISTORE, 11);		
 		mv.visitInsn(Opcodes.DCONST_0);
@@ -112,7 +112,7 @@ package com.mebigfatguy.pixelle.antlr;
         mv.visitVarInsn(Opcodes.ILOAD, 17);
         mv.visitVarInsn(Opcodes.ILOAD, 16);         
         mv.visitVarInsn(Opcodes.ILOAD, 7);  
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getValue", "(IIC)D");
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getValue", "(IIC)D", false);
         mv.visitInsn(Opcodes.DADD);
         mv.visitVarInsn(Opcodes.DSTORE, 12);
         mv.visitIincInsn(17, 1);
@@ -395,7 +395,7 @@ pixelExpr
             else 
             {
                 mv.visitInsn(Opcodes.D2I);
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
+                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I", false);
             }
 
             mv.visitVarInsn(Opcodes.ILOAD, 4);
@@ -414,7 +414,7 @@ pixelExpr
         {
             String s = $spec.text; 
             mv.visitLdcInsn(Character.valueOf(s.charAt(0))); 
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getValue", "(IIC)D" );
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getValue", "(IIC)D", false);
         };
         
 locationExpr
@@ -444,55 +444,55 @@ locationExpr
 functionExpr
     :   ABS '(' expr ')' 
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(D)D", false);
         }
     |   MAX '(' expr ',' expr ')' 
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "max", "(DD)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "max", "(DD)D", false);
         }
     |   MIN '(' expr ',' expr ')' 
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "min", "(DD)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "min", "(DD)D", false);
         } 
     |   POW '(' expr ',' expr ')' 
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "pow", "(DD)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "pow", "(DD)D", false);
         } 
     |   SQRT '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "sqrt", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "sqrt", "(D)D", false);
         } 
     |   SIN '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "sin", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "sin", "(D)D", false);
         } 
     |   COS '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "cos", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "cos", "(D)D", false);
         } 
     |   TAN '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "tan", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "tan", "(D)D", false);
         } 
     |   ASIN '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "asin", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "asin", "(D)D", false);
         } 
     |   ACOS '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "acos", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "acos", "(D)D", false);
         } 
     |   ATAN '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "atan", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "atan", "(D)D", false);
         } 
     |   LOG '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "log", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "log", "(D)D", false);
         } 
     |   EXP '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "exp", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "exp", "(D)D", false);
         } 
     |   E '(' ')'
         {
@@ -504,15 +504,15 @@ functionExpr
         }
     |   RANDOM '(' ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "random", "()D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "random", "()D", false);
         } 
     |   TODEGREES '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "toDegrees", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "toDegrees", "(D)D", false);
         } 
     |   TORADIANS '(' expr ')'
         {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "toRadians", "(D)D");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "toRadians", "(D)D", false);
         } ;
         
 specialExpr
@@ -588,8 +588,8 @@ specialExpr
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP_X2);
             mv.visitInsn(Opcodes.POP);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;", false);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z", true);
             mv.visitInsn(Opcodes.POP);
             
             mv.visitVarInsn(Opcodes.ILOAD, 3);
@@ -610,12 +610,12 @@ specialExpr
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I", true);
             mv.visitInsn(Opcodes.ICONST_1);
             mv.visitInsn(Opcodes.ISUB);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;", true);
             mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D", false);
             mv.visitInsn(Opcodes.DCMPG);
             mv.visitJumpInsn(Opcodes.IFLT, successLabel);
             mv.visitInsn(Opcodes.DCONST_0);
@@ -696,32 +696,32 @@ specialExpr
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP_X2);
             mv.visitInsn(Opcodes.POP);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;", false);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z", true);
             mv.visitInsn(Opcodes.POP);
             
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP_X2);
             mv.visitInsn(Opcodes.POP);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;", false);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z", true);
             mv.visitInsn(Opcodes.POP);
             
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP_X2);
             mv.visitInsn(Opcodes.POP);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;", false);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z", true);
             mv.visitInsn(Opcodes.POP);
             
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP_X2);
             mv.visitInsn(Opcodes.POP);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;", false);
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "add", "(Ljava/lang/Object;)Z", true);
             mv.visitInsn(Opcodes.POP);
             
             mv.visitVarInsn(Opcodes.ALOAD, 0);
@@ -729,46 +729,46 @@ specialExpr
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I", true);
             mv.visitInsn(Opcodes.ICONST_1);
             mv.visitInsn(Opcodes.ISUB);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;", true);
             mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D", false);
             
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I", true);
             mv.visitInsn(Opcodes.ICONST_1);
             mv.visitInsn(Opcodes.ISUB);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;", true);
             mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D", false);
             
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I", true);
             mv.visitInsn(Opcodes.ICONST_1);
             mv.visitInsn(Opcodes.ISUB);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;", true);
             mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D", false);
             
             mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, clz, "stack", "Ljava/util/List;");
             mv.visitInsn(Opcodes.DUP);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "size", "()I", true);
             mv.visitInsn(Opcodes.ICONST_1);
             mv.visitInsn(Opcodes.ISUB);
-            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;");
+            mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "java/util/List", "remove", "(I)Ljava/lang/Object;", true);
             mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D", false);
                                     
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "round", "(D)J", false);
             mv.visitInsn(Opcodes.L2I);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I", false);
             mv.visitVarInsn(Opcodes.ILOAD, 4);
             mv.visitInsn(Opcodes.IREM);
             mv.visitVarInsn(Opcodes.ALOAD, 1);
@@ -777,19 +777,19 @@ specialExpr
             String s = $spec.text; 
             mv.visitLdcInsn(Character.valueOf(s.charAt(0))); 
             mv.visitInsn(Opcodes.SWAP);
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, clz, "pixelAverage", "(DDDCLcom/mebigfatguy/pixelle/PixelleEval;)D");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, clz, "pixelAverage", "(DDDCLcom/mebigfatguy/pixelle/PixelleEval;)D", false);
         }
     |   INVERSEX  '(' expr ',' expr ')'
         {
             mv.visitVarInsn(Opcodes.DSTORE, 5);
             mv.visitInsn(Opcodes.D2I);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I", false);
             mv.visitVarInsn(Opcodes.ILOAD, 4);
             mv.visitInsn(Opcodes.IREM);
             mv.visitVarInsn(Opcodes.ALOAD, 1);
             mv.visitInsn(Opcodes.SWAP);
             mv.visitInsn(Opcodes.AALOAD);
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getWidth", "()I");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getWidth", "()I", false);
             mv.visitInsn(Opcodes.I2D);
             mv.visitVarInsn(Opcodes.DLOAD, 5);
             mv.visitInsn(Opcodes.DMUL);
@@ -802,13 +802,13 @@ specialExpr
         {
             mv.visitVarInsn(Opcodes.DSTORE, 5);
             mv.visitInsn(Opcodes.D2I);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I");
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "abs", "(I)I", false);
             mv.visitVarInsn(Opcodes.ILOAD, 4);
             mv.visitInsn(Opcodes.IREM);
             mv.visitVarInsn(Opcodes.ALOAD, 1);
             mv.visitInsn(Opcodes.SWAP);
             mv.visitInsn(Opcodes.AALOAD);
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getHeight", "()I");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mebigfatguy/pixelle/PixelleEval", "getHeight", "()I", false);
             mv.visitInsn(Opcodes.I2D);
             mv.visitVarInsn(Opcodes.DLOAD, 5);
             mv.visitInsn(Opcodes.DMUL);
