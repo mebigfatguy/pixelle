@@ -132,6 +132,7 @@ public class SaveAlgorithmDialog extends JDialog {
 		});
 		
 		ok.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				okClicked = true;
 				dispose();
@@ -139,6 +140,7 @@ public class SaveAlgorithmDialog extends JDialog {
 		});
 		
 		cancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				dispose();
 			}

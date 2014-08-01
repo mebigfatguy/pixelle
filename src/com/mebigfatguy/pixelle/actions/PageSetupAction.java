@@ -33,6 +33,7 @@ public class PageSetupAction extends AbstractAction {
 		super(PixelleBundle.getString(PixelleBundle.PAGESETUP_ITEM));
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 	}
 }

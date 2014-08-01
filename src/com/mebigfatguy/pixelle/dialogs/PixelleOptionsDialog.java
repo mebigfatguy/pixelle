@@ -213,6 +213,7 @@ public class PixelleOptionsDialog extends JDialog {
 		getRootPane().setDefaultButton(ok);
 
 		ok.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				okClicked = true;
 				dispose();
@@ -220,6 +221,7 @@ public class PixelleOptionsDialog extends JDialog {
 		});
 		
 		cancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				dispose();
 			}
@@ -233,6 +235,7 @@ public class PixelleOptionsDialog extends JDialog {
 		});
 		
 		colorButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				colorRadio.setSelected(true);
 				Color chosenColor = JColorChooser.showDialog(PixelleOptionsDialog.this, PixelleBundle.getString(PixelleBundle.PICK_COLOR), color);

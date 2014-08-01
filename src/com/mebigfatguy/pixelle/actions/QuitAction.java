@@ -39,6 +39,7 @@ public class QuitAction extends AbstractAction {
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('Q', ActionEvent.CTRL_MASK));
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		Set<JFrame> frames = FrameMgr.getInstance().getFrames();
 		for (JFrame f : frames) {

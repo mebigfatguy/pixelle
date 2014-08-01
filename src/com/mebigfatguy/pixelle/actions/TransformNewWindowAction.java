@@ -38,6 +38,7 @@ public class TransformNewWindowAction extends AbstractAction {
 		frame = pf;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		frame.toggleNewWindowOption();
 	}

@@ -43,6 +43,7 @@ public class NewFileAction extends AbstractAction {
 		frame = pf;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
 			PixelleFrame pf = new PixelleFrame();

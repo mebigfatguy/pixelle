@@ -41,6 +41,7 @@ public class OptionsAction extends AbstractAction {
 		frame = pf;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		PixelleOptionsDialog d = new PixelleOptionsDialog(frame, 
 														  PixelleEvalFactory.getIndexOutOfBoundsOption(), 

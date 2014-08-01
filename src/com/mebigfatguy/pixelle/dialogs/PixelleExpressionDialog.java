@@ -275,6 +275,7 @@ public class PixelleExpressionDialog extends JDialog {
 			optionsPanel.add(selectedRGBAlgorithm);
 			optionsPanel.add(Box.createHorizontalStrut(10));
 			savedRGBAlgorithms = AlgorithmArchiver.getArchiver().getAlgorithmDisplayPopup(ImageType.RGB, new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent ae) {
 					JMenuItem item = (JMenuItem)ae.getSource();
 					String algorithmName = item.getText();
@@ -345,6 +346,7 @@ public class PixelleExpressionDialog extends JDialog {
 			l.setLabelFor(selectedGSAlgorithm);
 			optionsPanel.add(Box.createHorizontalStrut(10));
 			savedGSAlgorithms = AlgorithmArchiver.getArchiver().getAlgorithmDisplayPopup(ImageType.Grayscale, new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent ae) {
 					JMenuItem item = (JMenuItem)ae.getSource();
 					String algorithmName = item.getText();
@@ -430,6 +432,7 @@ public class PixelleExpressionDialog extends JDialog {
 		}
 
 		save.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				ImageType imageType = getImageType();
 				SaveAlgorithmDialog dialog = new SaveAlgorithmDialog(frame, imageType);
@@ -448,6 +451,7 @@ public class PixelleExpressionDialog extends JDialog {
 		});
 
 		ok.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				ImageType imageType = getImageType();
 				Map<PixelleComponent, String> algorithm = getAlgorithms(imageType);
@@ -461,12 +465,14 @@ public class PixelleExpressionDialog extends JDialog {
 		});
 
 		cancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				dispose();
 			}
 		});
 
 		reset.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				Set<PixelleComponent> comps = (getImageType() == ImageType.RGB) ? PixelleComponent.rgbValues() : PixelleComponent.gsValues();
 				for (PixelleComponent comp : comps) {
@@ -575,6 +581,7 @@ public class PixelleExpressionDialog extends JDialog {
 
 		private final void initListeners() {
 			addButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent ae) {
 					Set<JFrame> frames = FrameMgr.getInstance().getFrames();
 					PixelleFrame pixFrame = (PixelleFrame)JOptionPane.showInputDialog(SourcePanel.this, PixelleBundle.getString(PixelleBundle.PICK_SOURCE_LABEL), PixelleBundle.getString(PixelleBundle.TITLE), JOptionPane.QUESTION_MESSAGE, null, frames.toArray(new JFrame[frames.size()]), null);
@@ -586,6 +593,7 @@ public class PixelleExpressionDialog extends JDialog {
 			});
 
 			removeButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent ae) {
 					int[] selRows = sourceTable.getSelectedRows();
 					for (int i = selRows.length - 1; i >= 0; i--) {

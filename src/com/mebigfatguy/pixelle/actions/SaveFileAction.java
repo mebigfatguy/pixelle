@@ -45,6 +45,7 @@ public class SaveFileAction extends AbstractAction {
 		saveAsAction = action;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
 			File f = frame.getImageFile();

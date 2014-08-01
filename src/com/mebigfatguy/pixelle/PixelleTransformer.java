@@ -126,6 +126,7 @@ public class PixelleTransformer {
 
 			PixelleClassLoader pcl = AccessController
 					.doPrivileged(new PrivilegedAction<PixelleClassLoader>() {
+						@Override
 						public PixelleClassLoader run() {
 							return new PixelleClassLoader(Thread
 									.currentThread().getContextClassLoader());
@@ -198,6 +199,7 @@ public class PixelleTransformer {
 			super(text);
 		}
 
+		@Override
 		public int LA(int i) {
 			if (i == 0) {
 				return 0;

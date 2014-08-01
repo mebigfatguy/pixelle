@@ -49,6 +49,7 @@ public class OpenFileAction extends AbstractAction {
 		frame = pf;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser jf = new JFileChooser(lastDir);
 		jf.setFileFilter(new FileFilter() {

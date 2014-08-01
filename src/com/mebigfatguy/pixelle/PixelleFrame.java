@@ -261,7 +261,8 @@ public class PixelleFrame extends JFrame {
 		    image = new PixelleImage(ImageIO.read(f));
 		    imageFile = f;
 		    EventQueue.invokeLater(new Runnable() {
-		    	public void run() {
+		    	@Override
+				public void run() {
 		    		Container cp = getContentPane();
 		    		cp.removeAll();
 		    		setZoom(ZoomLevel.FitToWindow);

@@ -38,6 +38,7 @@ public class ZoomAction extends AbstractAction {
 		zoom = level;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		frame.setZoom(zoom);
 	}

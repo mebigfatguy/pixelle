@@ -60,6 +60,7 @@ public class PixelInspector extends JFrame {
 	
 	public void setInspectorPosition(final Point p) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				xField.setText(String.valueOf(p.x));
 				yField.setText(String.valueOf(p.y));
@@ -69,6 +70,7 @@ public class PixelInspector extends JFrame {
 	
 	public void setInspectorColor(final Color c, final int transparency) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				sb.setLength(0);
 				sb.append(c.getRed());

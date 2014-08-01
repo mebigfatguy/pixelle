@@ -39,6 +39,7 @@ public class CloseFileAction extends AbstractAction {
 		frame = pf;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		frame.dispose();
 		FrameMgr.getInstance().remove(frame);

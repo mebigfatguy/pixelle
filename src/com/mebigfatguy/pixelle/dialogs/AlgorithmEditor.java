@@ -119,6 +119,7 @@ public class AlgorithmEditor extends JDialog {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 		ok.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				isOK = true;
 				dispose();
@@ -126,6 +127,7 @@ public class AlgorithmEditor extends JDialog {
 		});
 
 		cancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				dispose();
 			}

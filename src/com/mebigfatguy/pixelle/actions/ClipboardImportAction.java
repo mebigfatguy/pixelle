@@ -48,7 +48,8 @@ public class ClipboardImportAction extends AbstractAction {
         frame = pf;
     }
     
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
         try {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             Image imageContents = (Image)clipboard.getData(DataFlavor.imageFlavor);

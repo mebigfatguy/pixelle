@@ -38,6 +38,7 @@ public class InspectorAction extends AbstractAction {
 		frame = pf;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		frame.toggleInspector();
 	}
