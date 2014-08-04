@@ -112,7 +112,7 @@ public class AlgorithmArchiver {
 		return m;
 	}
 
-	private void populateMenuAlgorithms(JPopupMenu menu, Map<String, Map<String, Map<PixelleComponent, String>>> algorithms, ActionListener l) {
+	private static void populateMenuAlgorithms(JPopupMenu menu, Map<String, Map<String, Map<PixelleComponent, String>>> algorithms, ActionListener l) {
 		if (algorithms != null) {
 			for (final Map.Entry<String, Map<String, Map<PixelleComponent, String>>> entry : algorithms.entrySet()) {
 				String groupName = entry.getKey();
@@ -240,7 +240,7 @@ public class AlgorithmArchiver {
 
 	}
 
-	private void writeAlgorithms(OutputStream is, Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> algorithms) {
+	private static void writeAlgorithms(OutputStream is, Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> algorithms) {
 		try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(is))){
 			
 			pw.println("<algorithms xmlns='http://pixelle.mebigfatguy.com/" + Version.getVersion() + "'");
@@ -271,7 +271,7 @@ public class AlgorithmArchiver {
 		}
 	}
 
-	private void parseAlgorithms(InputStream xmlIs, final Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> algorithms) throws IOException, SAXException {
+	private static void parseAlgorithms(InputStream xmlIs, final Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> algorithms) throws IOException, SAXException {
 	    try {
     	    if (XSD_STREAM != null) {
         	    SAXParserFactory spf = SAXParserFactory.newInstance();
