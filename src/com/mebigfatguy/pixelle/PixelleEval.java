@@ -262,11 +262,7 @@ public abstract class PixelleEval {
 
 		case Clip:
 		default: {
-			if (value < 0.0) {
-				return 0.0;
-			} else {
-				return 255.0;
-			}
+			return value < 0.0 ? 0.0 : 255.0;
 		}
 		}
 	}
