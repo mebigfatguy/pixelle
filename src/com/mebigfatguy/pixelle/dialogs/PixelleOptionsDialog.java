@@ -33,6 +33,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
@@ -40,7 +41,6 @@ import javax.swing.border.EmptyBorder;
 import com.mebigfatguy.pixelle.ColorOutOfBoundsOption;
 import com.mebigfatguy.pixelle.IndexOutOfBoundsOption;
 import com.mebigfatguy.pixelle.PixelleBundle;
-import com.mebigfatguy.pixelle.PixelleFrame;
 import com.mebigfatguy.pixelle.utils.GuiUtils;
 
 public class PixelleOptionsDialog extends JDialog {
@@ -63,7 +63,7 @@ public class PixelleOptionsDialog extends JDialog {
 	private IndexOutOfBoundsOption ioobOption;
 	private ColorOutOfBoundsOption coobOption;
 	
-	public PixelleOptionsDialog(PixelleFrame owner, IndexOutOfBoundsOption ioption, ColorOutOfBoundsOption coption) {
+	public PixelleOptionsDialog(JFrame owner, IndexOutOfBoundsOption ioption, ColorOutOfBoundsOption coption) {
 		super(owner, PixelleBundle.getString(PixelleBundle.PIXEL_OPTIONS));
 		ioobOption = ioption;
 		color = ioobOption.getColor();

@@ -22,18 +22,18 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
 import com.mebigfatguy.pixelle.FrameMgr;
 import com.mebigfatguy.pixelle.PixelleBundle;
-import com.mebigfatguy.pixelle.PixelleFrame;
 
 public class CloseFileAction extends AbstractAction {
 
 	private static final long serialVersionUID = -6860345801345095089L;
-	PixelleFrame frame;
+	JFrame frame;
 	
-	public CloseFileAction(PixelleFrame pf) {
+	public CloseFileAction(JFrame pf) {
 		super(PixelleBundle.getString(PixelleBundle.CLOSE_ITEM));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('W', ActionEvent.CTRL_MASK));
 		frame = pf;

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
@@ -35,9 +36,9 @@ import com.mebigfatguy.pixelle.utils.GuiUtils;
 public class NewFileAction extends AbstractAction {
 
 	private static final long serialVersionUID = 2300557759679077906L;
-	PixelleFrame frame;
+	private JFrame frame;
 	
-	public NewFileAction(PixelleFrame pf) {
+	public NewFileAction(JFrame pf) {
 		super(PixelleBundle.getString(PixelleBundle.NEW_ITEM));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('N', ActionEvent.CTRL_MASK));
 		frame = pf;

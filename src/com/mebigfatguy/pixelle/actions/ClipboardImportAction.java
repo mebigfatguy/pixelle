@@ -28,6 +28,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
@@ -40,9 +41,9 @@ import com.mebigfatguy.pixelle.utils.GuiUtils;
 public class ClipboardImportAction extends AbstractAction {
 
     private static final long serialVersionUID = -357508741723961505L;
-    PixelleFrame frame;
+    JFrame frame;
     
-    public ClipboardImportAction(PixelleFrame pf) {
+    public ClipboardImportAction(JFrame pf) {
         super(PixelleBundle.getString(PixelleBundle.CLIPBOARD_IMPORT_ITEM));
         putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('I', ActionEvent.CTRL_MASK));
         frame = pf;

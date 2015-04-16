@@ -27,6 +27,7 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
@@ -40,10 +41,10 @@ import com.mebigfatguy.pixelle.utils.GuiUtils;
 public class OpenFileAction extends AbstractAction {
 	
 	private static final long serialVersionUID = -143429629947905056L;
-	PixelleFrame frame;
-	File lastDir = null;
+	private JFrame frame;
+	private File lastDir = null;
 	
-	public OpenFileAction(PixelleFrame pf) {
+	public OpenFileAction(JFrame pf) {
 		super(PixelleBundle.getString(PixelleBundle.OPEN_ITEM));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('O', ActionEvent.CTRL_MASK));
 		frame = pf;

@@ -22,20 +22,20 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
 import com.mebigfatguy.pixelle.PixelleBundle;
 import com.mebigfatguy.pixelle.PixelleEvalFactory;
-import com.mebigfatguy.pixelle.PixelleFrame;
 import com.mebigfatguy.pixelle.dialogs.PixelleOptionsDialog;
 
 public class OptionsAction extends AbstractAction {
 
 	private static final long serialVersionUID = -4788815421907339556L;
 	
-	PixelleFrame frame;
+	JFrame frame;
 	
-	public OptionsAction(PixelleFrame pf) {
+	public OptionsAction(JFrame pf) {
 		super(PixelleBundle.getString(PixelleBundle.OPTIONS_ITEM));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('O', ActionEvent.SHIFT_MASK | ActionEvent.CTRL_MASK));
 		frame = pf;
