@@ -32,6 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -40,7 +41,6 @@ import javax.swing.WindowConstants;
 import com.mebigfatguy.pixelle.AlgorithmArchiver;
 import com.mebigfatguy.pixelle.ImageType;
 import com.mebigfatguy.pixelle.PixelleBundle;
-import com.mebigfatguy.pixelle.PixelleFrame;
 import com.mebigfatguy.pixelle.utils.GuiUtils;
 
 public class SaveAlgorithmDialog extends JDialog {	
@@ -58,7 +58,7 @@ public class SaveAlgorithmDialog extends JDialog {
 	private JButton cancel;
 	private boolean okClicked = false;
 	
-	public SaveAlgorithmDialog(PixelleFrame owner, ImageType imageOutputType) {
+	public SaveAlgorithmDialog(JFrame owner, ImageType imageOutputType) {
 		super(owner, PixelleBundle.getString(PixelleBundle.SAVE_ALGORITHM));
 		imageType = imageOutputType;
 		initComponents();
