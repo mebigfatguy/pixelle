@@ -60,10 +60,11 @@ public class OpenFileAction extends AbstractAction {
 				if (f.isDirectory())
 					return true;
 				
-				String path = f.getPath().toLowerCase(Locale.getDefault());
+				Locale defaultLocale = Locale.getDefault();
+				String path = f.getPath().toLowerCase(defaultLocale);
 				String[] formats = ImageIO.getReaderFormatNames();
 				for (String format : formats) {
-					if (path.endsWith(format.toLowerCase(Locale.getDefault())))
+					if (path.endsWith(format.toLowerCase(defaultLocale)))
 						return true;
 				}
 				return false;
