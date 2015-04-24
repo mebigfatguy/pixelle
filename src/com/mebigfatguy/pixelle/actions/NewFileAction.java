@@ -47,7 +47,7 @@ public class NewFileAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			PixelleFrame pf = new PixelleFrame();
+			JFrame pf = new PixelleFrame();
 			Rectangle bounds = GuiUtils.getScreenBounds();
 			bounds.grow(-200, -200);
 			pf.setBounds(bounds);

@@ -54,7 +54,7 @@ public class ClipboardImportAction extends AbstractAction {
         try {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             Image imageContents = (Image)clipboard.getData(DataFlavor.imageFlavor);
-            PixelleFrame pf = new PixelleFrame(new PixelleImage((BufferedImage) imageContents));
+            JFrame pf = new PixelleFrame(new PixelleImage((BufferedImage) imageContents));
             Rectangle bounds = GuiUtils.getScreenBounds();
             bounds.grow(-200, -200);
             pf.setBounds(bounds);
