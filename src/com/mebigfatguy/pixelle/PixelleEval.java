@@ -42,7 +42,7 @@ public abstract class PixelleEval {
 	 * @param iOption the out of bounds pixels option to use
 	 * @param cOption TODO
 	 */
-	public PixelleEval(PixelleImage image, IndexOutOfBoundsOption iOption, ColorOutOfBoundsOption cOption) {
+	protected PixelleEval(PixelleImage image, IndexOutOfBoundsOption iOption, ColorOutOfBoundsOption cOption) {
 		srcImage = image;
 		buffer = image.getBuffer();
 		width = image.getWidth();
