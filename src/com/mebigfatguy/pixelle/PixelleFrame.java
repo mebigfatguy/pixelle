@@ -31,6 +31,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -98,6 +102,8 @@ public class PixelleFrame extends JFrame {
 	JMenu goodiesMenu;
 	JCheckBoxMenuItem inspectorItem;
 	
+	PrinterJob printerJob;
+	
 	File imageFile;
 	JScrollPane scroll;
 	ImagePanel panel;
@@ -121,6 +127,9 @@ public class PixelleFrame extends JFrame {
 		doNewWindow = transformInNewWindow;
 		initComponents();
 		initListeners();
+		
+		printerJob = PrinterJob.getPrinterJob();
+		printerJob.setPrintable(image);
 		
 		FrameMgr.getInstance().add(this);
 	}
@@ -306,6 +315,10 @@ public class PixelleFrame extends JFrame {
 			inspector = null;
 			inspectorItem.setSelected(false);
 		}
+	}
+	
+	public PrinterJob getPrinterJob() {
+		return printerJob;
 	}
 	
 	@Override

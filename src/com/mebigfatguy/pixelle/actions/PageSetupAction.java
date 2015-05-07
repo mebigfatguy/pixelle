@@ -19,6 +19,7 @@
 package com.mebigfatguy.pixelle.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.print.PrinterJob;
 
 import javax.swing.AbstractAction;
 
@@ -29,11 +30,16 @@ public class PageSetupAction extends AbstractAction {
 	
 	private static final long serialVersionUID = -3397949264743769800L;
 
+	private PixelleFrame frame;
+	
 	public PageSetupAction(PixelleFrame pf) {
 		super(PixelleBundle.getString(PixelleBundle.PAGESETUP_ITEM));
+		frame = pf;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		PrinterJob job = frame.getPrinterJob();
+		job.printDialog();
 	}
 }

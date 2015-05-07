@@ -26,12 +26,15 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 
 /**
  * a representation of an image to manipulate. Encapsulates two BufferedImages, one
  * to represent the real image, and the second to represent selection.
  */
-public class PixelleImage {
+public class PixelleImage implements Printable {
 
 	private final BufferedImage image;
 	private final BufferedImage selection;
@@ -61,6 +64,12 @@ public class PixelleImage {
     	} finally {
     	    g.dispose();
     	}
+	}
+	
+	@Override
+	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+		graphics.drawImage(image, 0, 0, 0, 0, image.getWidth(), image.getHeight(), image.getWidth(), image.getHeight(), null);
+		return PAGE_EXISTS;
 	}
 
 	public BufferedImage getSaveImage() {

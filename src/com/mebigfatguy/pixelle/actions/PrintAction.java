@@ -19,9 +19,11 @@
 package com.mebigfatguy.pixelle.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.print.PrinterException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import com.mebigfatguy.pixelle.PixelleBundle;
@@ -31,12 +33,20 @@ public class PrintAction extends AbstractAction {
 	
 	private static final long serialVersionUID = 5826553084556182790L;
 
+	private PixelleFrame frame;
+	
 	public PrintAction(PixelleFrame pf) {
 		super(PixelleBundle.getString(PixelleBundle.PRINT_ITEM));
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('P', ActionEvent.CTRL_MASK));
+		frame = pf;
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent ae) {
+		try {
+			frame.getPrinterJob().print();
+		} catch (PrinterException e) {
+			JOptionPane.showMessageDialog(frame, e.getMessage());
+		}
 	}
 }
