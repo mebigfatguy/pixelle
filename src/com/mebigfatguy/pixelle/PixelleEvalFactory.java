@@ -57,6 +57,7 @@ public class PixelleEvalFactory {
 	        ioobOption.setColor((Color) ois.readObject());
 	        coobOption = (ColorOutOfBoundsOption) ois.readObject();
 	    } catch (Exception e) {  
+	    	// just use defaults
 	    }
 	}
 	
@@ -69,7 +70,8 @@ public class PixelleEvalFactory {
     	    oos.writeObject(ioobOption);
     	    oos.writeObject(ioobOption.getColor());
     	    oos.writeObject(coobOption);
-	    } catch (Exception e) {   
+	    } catch (Exception e) { 
+	    	// just use defaults
 	    }
 	}
 	
