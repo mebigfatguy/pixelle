@@ -49,6 +49,7 @@ public class PixelInspector extends JFrame {
 	private JTextField yField;
 	private JTextField colorField;
 	private JTextField transparencyField;
+	private boolean frozen;
 	private final StringBuilder sb = new StringBuilder();
 	
 	public PixelInspector(PixelleFrame pf) {
@@ -58,14 +59,24 @@ public class PixelInspector extends JFrame {
 		initListeners();
 	}
 	
+	public boolean isFrozen() {
+	    return frozen;
+	}
+	
+	public void toggleFrozen() {
+	    frozen = !frozen;
+	}
+	
 	public void setInspectorPosition(final Point p) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				xField.setText(String.valueOf(p.x));
-				yField.setText(String.valueOf(p.y));
-			}
-		});
+	    if (!frozen) {
+    		EventQueue.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    				xField.setText(String.valueOf(p.x));
+    				yField.setText(String.valueOf(p.y));
+    			}
+    		});
+	    }
 	}
 	
 	public void setInspectorColor(final Color c, final int transparency) {

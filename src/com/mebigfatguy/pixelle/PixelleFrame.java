@@ -341,7 +341,6 @@ public class PixelleFrame extends JFrame {
 		private ZoomLevel zoom = ZoomLevel.FitToWindow;
 		private final int[] color = new int[4];
 		private Point lastPoint = new Point();
-		private boolean frozen = false;
 		
 		public ImagePanel() {
 			
@@ -353,7 +352,7 @@ public class PixelleFrame extends JFrame {
 
 				@Override
 				public void mouseMoved(MouseEvent e) {
-					if ((inspector != null) && !frozen) {
+					if ((inspector != null) && !inspector.isFrozen()) {
 						Point p = e.getPoint();
 						if (!lastPoint.equals(p)) {
 							lastPoint = p;
@@ -377,7 +376,9 @@ public class PixelleFrame extends JFrame {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					frozen = !frozen;
+				    if (inspector != null) {
+				        inspector.toggleFrozen();
+				    }
 				}
 			});
 		}
