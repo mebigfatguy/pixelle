@@ -80,7 +80,7 @@ public class PixelInspector extends JFrame {
         }
     }
 
-    public void setInspectorColor(ImageType imageType, final Color c, final int transparency) {
+    public void setInspectorColor(final ImageType imageType, final Color c, final int transparency) {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
