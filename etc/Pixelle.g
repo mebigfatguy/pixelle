@@ -40,7 +40,7 @@ package com.mebigfatguy.pixelle.antlr;
 		
 		clz = clsName.replace('.', '/');
 		cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-		cw.visit(Opcodes.V1_5, Opcodes.ACC_PUBLIC, clz, null, "java/lang/Object", new String[] {"com/mebigfatguy/pixelle/PixelleExpr"}); 
+		cw.visit(Opcodes.V1_6, Opcodes.ACC_PUBLIC, clz, null, "java/lang/Object", new String[] {"com/mebigfatguy/pixelle/PixelleExpr"}); 
 
 		cw.visitField(Opcodes.ACC_PRIVATE, "width", "I", null, Integer.valueOf(0));
 		cw.visitField(Opcodes.ACC_PRIVATE, "height", "I", null, Integer.valueOf(0));

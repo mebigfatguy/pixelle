@@ -5,6 +5,6 @@
 	<classpathentry kind="lib" path="lib/stringtemplate-4.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-3.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-runtime-3.5.2.jar"/>
-	<classpathentry kind="lib" path="lib/asm-5.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/asm-5.2.jar" sourcepath="/home/dave/.m2/repository/org/ow2/asm/asm/5.2/asm-5.2-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
