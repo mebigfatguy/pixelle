@@ -15,10 +15,10 @@
       <all-permissions/> 
   </security> 
   <resources> 
-    <j2se version="1.6+" initial-heap-size="500m" max-heap-size="1200m"/>
+    <j2se version="1.7+" initial-heap-size="500m" max-heap-size="1200m"/>
     <jar href="/jnlp/pixelle-$VERSION.jar"/>
-    <jar href="/jnlp/antlr-runtime-3.5.jar"/> 
-    <jar href="/jnlp/asm-4.1.jar"/> 
+    <jar href="/jnlp/antlr-runtime-3.5.2.jar"/> 
+    <jar href="/jnlp/asm-5.2.jar"/> 
     <jar href="/jnlp/stringtemplate-4.0.2.jar"/> 
   </resources> 
   <application-desc main-class="com.mebigfatguy.pixelle.Pixelle"/> 
