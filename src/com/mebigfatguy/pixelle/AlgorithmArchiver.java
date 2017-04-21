@@ -24,13 +24,12 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -94,8 +93,8 @@ public class AlgorithmArchiver {
     private final Map<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>> userAlgorithms;
 
     private AlgorithmArchiver() {
-        systemAlgorithms = new EnumMap<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>>(ImageType.class);
-        userAlgorithms = new EnumMap<ImageType, Map<String, Map<String, Map<PixelleComponent, String>>>>(ImageType.class);
+        systemAlgorithms = new EnumMap<>(ImageType.class);
+        userAlgorithms = new EnumMap<>(ImageType.class);
         loadSystemAlgorithms();
         loadUserAlgorithms();
     }
@@ -162,7 +161,7 @@ public class AlgorithmArchiver {
     }
 
     public String[] getUserGroups(ImageType imageType) {
-        Set<String> groups = new TreeSet<String>(userAlgorithms.get(imageType).keySet());
+        Set<String> groups = new TreeSet<>(userAlgorithms.get(imageType).keySet());
         groups.remove(CURRENT);
         return groups.toArray(new String[groups.size()]);
     }
@@ -170,17 +169,17 @@ public class AlgorithmArchiver {
     public void addAlgorithm(ImageType imageType, String groupName, String algorithmName, Map<PixelleComponent, String> algorithm) {
         Map<String, Map<String, Map<PixelleComponent, String>>> type = userAlgorithms.get(imageType);
         if (type == null) {
-            type = new HashMap<String, Map<String, Map<PixelleComponent, String>>>();
+            type = new HashMap<>();
             userAlgorithms.put(imageType, type);
         }
 
         Map<String, Map<PixelleComponent, String>> group = type.get(groupName);
         if (group == null) {
-            group = new HashMap<String, Map<PixelleComponent, String>>();
+            group = new HashMap<>();
             type.put(groupName, group);
         }
 
-        group.put(algorithmName, new EnumMap<PixelleComponent, String>(algorithm));
+        group.put(algorithmName, new EnumMap<>(algorithm));
     }
 
     public void setCurrent(ImageType imageType, Map<PixelleComponent, String> algorithm) {
@@ -206,7 +205,7 @@ public class AlgorithmArchiver {
         pixelleDir.mkdirs();
         File algoFile = new File(pixelleDir, ALGORITHMS_FILE);
 
-        try (OutputStream xmlOut = new BufferedOutputStream(new FileOutputStream(algoFile))) {
+        try (OutputStream xmlOut = new BufferedOutputStream(Files.newOutputStream(algoFile.toPath()))) {
             writeAlgorithms(xmlOut, userAlgorithms);
         } catch (Exception e) {
             e.printStackTrace();
@@ -229,7 +228,7 @@ public class AlgorithmArchiver {
         File algoFile = new File(pixelleDir, ALGORITHMS_FILE);
         if (algoFile.exists() && algoFile.isFile()) {
 
-            try (InputStream xmlIs = new BufferedInputStream(new FileInputStream(algoFile))) {
+            try (InputStream xmlIs = new BufferedInputStream(Files.newInputStream(algoFile.toPath()))) {
 
                 parseAlgorithms(xmlIs, userAlgorithms);
             } catch (Exception e) {
@@ -290,13 +289,13 @@ public class AlgorithmArchiver {
                 @Override
                 public void startElement(String uri, String localName, String qName, Attributes atts) {
                     if (TYPE.equals(localName)) {
-                        currentType = new HashMap<String, Map<String, Map<PixelleComponent, String>>>();
+                        currentType = new HashMap<>();
                         algorithms.put(ImageType.valueOf(atts.getValue(NAME)), currentType);
                     } else if (GROUP.equals(localName)) {
-                        currentGroup = new HashMap<String, Map<PixelleComponent, String>>();
+                        currentGroup = new HashMap<>();
                         currentType.put(atts.getValue(NAME), currentGroup);
                     } else if (ALGORITHM.equals(localName)) {
-                        currentAlgorithm = new EnumMap<PixelleComponent, String>(PixelleComponent.class);
+                        currentAlgorithm = new EnumMap<>(PixelleComponent.class);
                         currentGroup.put(atts.getValue(NAME), currentAlgorithm);
                     } else if (COMPONENT.equals(localName)) {
                         currentComponentName = atts.getValue(NAME);
