@@ -23,13 +23,14 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -201,12 +202,17 @@ public class AlgorithmArchiver {
     }
 
     public void save() {
-        File pixelleDir = new File(System.getProperty("user.home"), PIXELLE);
-        pixelleDir.mkdirs();
-        File algoFile = new File(pixelleDir, ALGORITHMS_FILE);
+        try {
+            Path pixelleDir = Paths.get(System.getProperty("user.home"), PIXELLE);
+            Files.createDirectories(pixelleDir);
 
-        try (OutputStream xmlOut = new BufferedOutputStream(Files.newOutputStream(algoFile.toPath()))) {
-            writeAlgorithms(xmlOut, userAlgorithms);
+            Path algoFile = pixelleDir.resolve(ALGORITHMS_FILE);
+
+            try (OutputStream xmlOut = new BufferedOutputStream(Files.newOutputStream(algoFile))) {
+                writeAlgorithms(xmlOut, userAlgorithms);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -218,22 +224,27 @@ public class AlgorithmArchiver {
 
             parseAlgorithms(xmlIs, systemAlgorithms);
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
 
     private void loadUserAlgorithms() {
-        File pixelleDir = new File(System.getProperty("user.home"), PIXELLE);
-        pixelleDir.mkdirs();
-        File algoFile = new File(pixelleDir, ALGORITHMS_FILE);
-        if (algoFile.exists() && algoFile.isFile()) {
+        try {
+            Path pixelleDir = Paths.get(System.getProperty("user.home"), PIXELLE);
+            Files.createDirectories(pixelleDir);
 
-            try (InputStream xmlIs = new BufferedInputStream(Files.newInputStream(algoFile.toPath()))) {
+            Path algoFile = pixelleDir.resolve(ALGORITHMS_FILE);
+            if (Files.exists(algoFile) && !Files.isDirectory(algoFile)) {
 
-                parseAlgorithms(xmlIs, userAlgorithms);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e.getMessage());
+                try (InputStream xmlIs = new BufferedInputStream(Files.newInputStream(algoFile))) {
+
+                    parseAlgorithms(xmlIs, userAlgorithms);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage());
+                }
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
     }

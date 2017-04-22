@@ -22,10 +22,11 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.mebigfatguy.pixelle.eval.PixelleEval3ByteBGR;
 import com.mebigfatguy.pixelle.eval.PixelleEval4ByteABGR;
@@ -49,8 +50,8 @@ public class PixelleEvalFactory {
     }
 
     public static void loadSettings() {
-        File f = new File(new File(System.getProperty("user.home"), PIXELLE), "pef.ser");
-        try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(Files.newInputStream(f.toPath())))) {
+        Path p = Paths.get(System.getProperty("user.home"), PIXELLE, "pef.ser");
+        try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(Files.newInputStream(p)))) {
             ioobOption = (IndexOutOfBoundsOption) ois.readObject();
             ioobOption.setColor((Color) ois.readObject());
             coobOption = (ColorOutOfBoundsOption) ois.readObject();
@@ -60,14 +61,18 @@ public class PixelleEvalFactory {
     }
 
     public static void saveSettings() {
-        File f = new File(System.getProperty("user.home"), PIXELLE);
-        f.mkdir();
-        f = new File(f, "pef.ser");
-        try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(Files.newOutputStream(f.toPath())))) {
+        try {
+            Path p = Paths.get(System.getProperty("user.home"), PIXELLE);
+            Files.createDirectories(p);
+            p = p.resolve("pef.ser");
+            try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(Files.newOutputStream(p)))) {
 
-            oos.writeObject(ioobOption);
-            oos.writeObject(ioobOption.getColor());
-            oos.writeObject(coobOption);
+                oos.writeObject(ioobOption);
+                oos.writeObject(ioobOption.getColor());
+                oos.writeObject(coobOption);
+            } catch (Exception e) {
+                // just use defaults
+            }
         } catch (Exception e) {
             // just use defaults
         }
