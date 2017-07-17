@@ -71,17 +71,17 @@ public class AlgorithmArchiver {
     private static InputStream XSD_STREAM;
 
     static {
-        ByteArrayOutputStream baos = null;
         try (InputStream is = AlgorithmArchiver.class.getResourceAsStream(SYSTEM_ALGO_XSD_PATH)) {
             if (is != null) {
-                baos = new ByteArrayOutputStream();
-                byte[] data = new byte[1024];
-                int len = is.read(data);
-                while (len >= 0) {
-                    baos.write(data, 0, len);
-                    len = is.read(data);
+                try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                    byte[] data = new byte[1024];
+                    int len = is.read(data);
+                    while (len >= 0) {
+                        baos.write(data, 0, len);
+                        len = is.read(data);
+                    }
+                    XSD_STREAM = new ByteArrayInputStream(baos.toByteArray());
                 }
-                XSD_STREAM = new ByteArrayInputStream(baos.toByteArray());
             }
         } catch (IOException e) {
             // ignore
