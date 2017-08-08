@@ -1,8 +1,8 @@
 <Project projectName="pixelle">
-  <Jar>././target/classes</Jar>
-  <AuxClasspathEntry>././lib/antlr-3.5.2.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>././lib/antlr-runtime-3.5.2.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>././lib/stringtemplate-4.0.2.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>./lib/asm-5.0.4.jar</AuxClasspathEntry>
-  <SrcDir>././src</SrcDir>
+  <Jar>./././target/classes</Jar>
+  <AuxClasspathEntry>./././lib/antlr-3.5.2.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./././lib/antlr-runtime-3.5.2.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./././lib/stringtemplate-4.0.2.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/asm-5.2.jar</AuxClasspathEntry>
+  <SrcDir>./././src</SrcDir>
 </Project>
