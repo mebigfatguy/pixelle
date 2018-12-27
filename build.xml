@@ -156,6 +156,7 @@
 				<attribute name="Bundle-Name" value="pixelle plugin"/>
 				<attribute name="Bundle-SymbolicName" value="com.mebigfatguy.pixelle"/>
 				<attribute name="Bundle-Version" value="${pixelle.version}"/>
+				<attribute name="Import-Package" value="org.antlr.runtime,org.objectweb.asm,org.xml.sax"/>
 				<attribute name="Export-Package" value="com.mebigfatguy.pixelle"/>
 			</manifest>
 		</jar>	
